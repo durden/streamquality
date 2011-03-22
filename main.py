@@ -23,13 +23,23 @@ class MainHandler(LocalHandler):
 
     def get(self):
         """GET request"""
-
         self.render_template('index.html')
+
+class RegisterHandler(LocalHandler):
+    """Deal with registering user with local service"""
+
+    def get(self):
+        """GET request"""
+        self.render_template('register.html')
+
+    def post(self):
+        """POST request"""
 
 def main():
     """main"""
 
     application = webapp.WSGIApplication([('/', MainHandler),
+                                           ('/register/', RegisterHandler),
                                         ], debug=True)
     util.run_wsgi_app(application)
 
