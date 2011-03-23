@@ -5,6 +5,7 @@ Models
 
 from google.appengine.ext import db
 
+
 class SQUser(db.Model):
     """User of stream quality service"""
 

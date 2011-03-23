@@ -2,13 +2,15 @@
 Main Views
 """
 
-import os, cgi
+import os
+import cgi
 
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util, template
+from google.appengine.ext.webapp import util
+from google.appengine.ext.webapp import template
 
 
-TEMPLATE_DIR=os.path.join(os.path.dirname(__file__), 'templates/')
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates/')
 
 
 class LocalHandler(webapp.RequestHandler):
@@ -52,7 +54,8 @@ class RegisterHandler(LocalHandler):
             self.redirect('/register/failed')
         else:
             self.redirect('/register/success')
-        
+
+
 def main():
     """main"""
 
