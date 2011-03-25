@@ -9,6 +9,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
+from models import SQUser
+
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates/')
 
@@ -41,8 +43,10 @@ class RegisterHandler(LocalHandler):
         if result is not None:
             if result == "success":
                 msg = "User registered!"
-            elif result == "failed":
+            elif result == "incomplete":
                 msg = "Please fill out all required fields"
+            elif result == "duplicate":
+                msg = "User already registered"
 
         self.render_template('register.html', msg=msg)
 
@@ -53,7 +57,13 @@ class RegisterHandler(LocalHandler):
         if user_name == '' or not len(user_name):
             self.redirect('/register/failed')
         else:
-            self.redirect('/register/success')
+            if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
+                self.redirect('/register/duplicate')
+            else:
+                user = SQUser(oauth_secret='secret', oauth_token='token',
+                                user_name=user_name, real_name='real')
+                user.put()
+                self.redirect('/register/success')
 
 
 def main():
