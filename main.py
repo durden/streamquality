@@ -55,7 +55,7 @@ class RegisterHandler(LocalHandler):
 
         user_name = cgi.escape(self.request.get('user_name'))
         if user_name == '' or not len(user_name):
-            self.redirect('/register/failed')
+            self.redirect('/register/incomplete')
         else:
             if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
                 self.redirect('/register/duplicate')
