@@ -1,0 +1,14 @@
+"""
+Stubbed out tests
+
+- Not sure the best way to unit test requests, etc. on app engine without
+  running django on it.
+"""
+
+
+Register tests:
+    - Empty username
+    - Already registered
+    - Valid user
+    - Invalid characters
+    - Quotes in name
