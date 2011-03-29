@@ -2,7 +2,7 @@
 Simple [Google AppEngine](http://code.google.com/appengine/) application to
 help twitter users rate recent tweets from the people they follow.
 
-[Live prototype](http://streamquality.appspot.com/) :be aware that I don't
+[Live prototype](http://streamquality.appspot.com/): be aware that I don't
 claim this link will always point to a functional version of the code ;)
 
 ## Inspiration/Goals
