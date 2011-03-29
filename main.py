@@ -4,6 +4,7 @@ Main Views
 
 import os
 import cgi
+import oauth
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -13,6 +14,12 @@ from models import SQUser
 
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates/')
+
+CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
+CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
+CALLBACK_URL = "http://streamquality.appspot.com/callback/"
+
+# FIXME: What happens when you don't provide GET and POST for a handler?
 
 
 class LocalHandler(webapp.RequestHandler):
@@ -57,25 +64,72 @@ class RegisterHandler(LocalHandler):
         if user_name == '' or not len(user_name):
             self.redirect('/register/incomplete')
         else:
-            # FIXME: Need to do something about a user that starts
-            # registration process, but never comes back from the callback, in
-            # which case they would show up without valid tokens.  Should
-            # probably just try to send them back to oauth instead of error
+            # FIXME: Do something about user that starts registration
+            # process, but never comes back from callback, in which case they
+            # would show up without valid tokens.  Should probably just try
+            # to send them back to oauth instead of error
             if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
                 self.redirect('/register/duplicate')
             else:
+                # FIXME: Update defaults with n/a or something better
                 user = SQUser(oauth_secret='secret', oauth_token='token',
                                 user_name=user_name, real_name='real')
                 user.put()
-                self.redirect('/register/success')
+
+                # oauth dance, which ends up at the callback url
+                client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                                CALLBACK_URL)
+                return self.redirect(client.get_authorization_url())
+
+
+class CallbackHandler(LocalHandler):
+    """Handle callback from oauth with Twitter"""
+
+    def get(self):
+        """Complete oauth with Twitter and save users tokens for future use"""
+
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                        CALLBACK_URL)
+
+        # FIXME: What happens when these GET params don't exist?
+        auth_token = self.request.get('oauth_token')
+        auth_verifier = self.request.get('oauth_verifier')
+
+        try:
+            user_info = client.get_user_info(auth_token,
+                                                auth_verifier=auth_verifier)
+        except oauth.OAuthException:
+            # FIXME: Handle -- test by going straight to callback url w/o
+            # any of the GET params
+            pass
+
+        try:
+            user = SQUser.all().filter("user_name = ",
+                                            user_info['username'])[0]
+        except IndexError:
+            self.redirect('/register/incomplete')
+            # FIXME: Does this return HAVE to be here?
+            return
+
+        user.oauth_secret = user_info['secret']
+        user.oauth_token = user_info['token']
+        user.put()
+
+        return self.redirect('/register/success/')
+
+    def post(self):
+        """Should never get a post request for this handler"""
+        self.redirect('/')
 
 
 def main():
     """main"""
 
-    #FIXME: Need a catch-all for 404 error
+    # FIXME: Don't require ending slash in URLS
+    # FIXME: Need a catch-all for 404 error
     application = webapp.WSGIApplication([('/', MainHandler),
                                            ('/register/(.*)', RegisterHandler),
+                                           ('/callback/$', CallbackHandler),
                                         ], debug=True)
     util.run_wsgi_app(application)
 
