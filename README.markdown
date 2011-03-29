@@ -2,8 +2,8 @@
 Simple [Google AppEngine](http://code.google.com/appengine/) application to
 help twitter users rate recent tweets from the people they follow.
 
-Live prototype
-[Beta Link](http://streamquality.appspot.com/)
+[Live prototype](http://streamquality.appspot.com/) be aware that I don't
+claim this link will always point to a functional version of the code ;)
 
 ## Inspiration/Goals
 What I hope to solve and ideas on how.  Feel free to fork away and do
