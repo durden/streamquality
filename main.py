@@ -57,6 +57,10 @@ class RegisterHandler(LocalHandler):
         if user_name == '' or not len(user_name):
             self.redirect('/register/incomplete')
         else:
+            # FIXME: Need to do something about a user that starts
+            # registration process, but never comes back from the callback, in
+            # which case they would show up without valid tokens.  Should
+            # probably just try to send them back to oauth instead of error
             if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
                 self.redirect('/register/duplicate')
             else:
