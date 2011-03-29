@@ -4,16 +4,25 @@ About
 Simple [Google AppEngine](http://code.google.com/appengine/) application to
 help twitter users rate recent tweets from the people they follow.
 
+Live prototype
+--------
+[Beta Link](http://streamquality.appspot.com/)
 
 Inspiration/Goals
 ========
 
+What I hope to solve and ideas on how.  Feel free to fork away and do
+something completely different, but send me a pull request or message so I can
+see what awesome ideas everyone has!
+
 Problem
 --------
+
 Difficult to gain insight into which of your followers add value to your stream.
 
 Solution
 --------
+
 Allow users to view individual tweets from their followers and vote on them.
 
 Detailed mission statement
