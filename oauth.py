@@ -216,7 +216,7 @@ class OAuthClient():
 
       if not result:
         logging.error("The auth token %s was not found in our db" % auth_token)
-        raise Exception, "Could not find Auth Token in database"
+        raise OAuthException("Could not find Auth Token in database")
       else:
         auth_secret = result.secret
 
