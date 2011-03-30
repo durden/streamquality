@@ -42,11 +42,19 @@ class MainHandler(LocalHandler):
 
 
 class VoteHandler(LocalHandler):
-    """Homepage"""
+    """Vote on tweets"""
 
     def get(self):
         """GET request"""
         self.render_template('vote.html')
+
+
+class AboutHandler(LocalHandler):
+    """About"""
+
+    def get(self):
+        """GET request"""
+        self.render_template('about.html')
 
 
 class RegisterHandler(LocalHandler):
@@ -141,6 +149,7 @@ def main():
                                            ('/register/(.*)', RegisterHandler),
                                            ('/callback/$', CallbackHandler),
                                            ('/vote/$', VoteHandler),
+                                           ('/about/$', AboutHandler),
                                         ], debug=True)
     util.run_wsgi_app(application)
 
