@@ -111,6 +111,7 @@ class CallbackHandler(LocalHandler):
             # FIXME: Does this return HAVE to be here?
             return
 
+        user.real_name = user_info['name']
         user.oauth_secret = user_info['secret']
         user.oauth_token = user_info['token']
         user.put()
