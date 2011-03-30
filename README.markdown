@@ -5,6 +5,11 @@ help twitter users rate recent tweets from the people they follow.
 [Live prototype](http://streamquality.appspot.com/): be aware that I don't
 claim this link will always point to a functional version of the code ;)
 
+Please see
+[TODO file](https://github.com/durden/streamquality/blob/master/TODO.markdown)
+for things to help contribute to, or you can always take a bug from the
+[open issues](https://github.com/durden/streamquality/issues).
+
 ## Inspiration/Goals
 What I hope to solve and ideas on how.  Feel free to fork away and do
 something completely different, but send me a pull request or message so I can
@@ -34,9 +39,9 @@ particular user or very little value relative to the rest of their stream.
 The service can then begin to suggest who you should consider unfollowing.
 
 ##### Requirements for MVP
-Show random tweet from a person you follow
-Allow user to vote up/down
-Interface to unfollow user
+Please see
+[TODO file](https://github.com/durden/streamquality/blob/master/TODO.markdown)
+for a list of the remaining/unimplemented requirements for the MVP.
 
 ##### Interface Ideas
 Show 10 tweets from 10 different users that person follows each with a thumbs
