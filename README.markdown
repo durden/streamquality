@@ -10,6 +10,16 @@ Please see
 for things to help contribute to, or you can always take a bug from the
 [open issues](https://github.com/durden/streamquality/issues).
 
+## Contribution Requirements
+I would love to take a look at any pull requests anyone would like to make.  I
+have only one request, please verify that your code (if it's Python) that it
+adheres to the [PEP8 standards](http://www.python.org/dev/peps/pep-0008/).
+
+I will not accept any pull requests if they don't follow this standard.  For
+this reason, I advice you to use the excellent
+[PEP8 script](https://github.com/jcrocholl/pep8) from
+[jcrocholl](https://github.com/jcrocholl).
+
 ## Inspiration/Goals
 What I hope to solve and ideas on how.  Feel free to fork away and do
 something completely different, but send me a pull request or message so I can
