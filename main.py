@@ -20,7 +20,7 @@ CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 CALLBACK_URL = "http://streamquality.appspot.com/callback/"
 
 # FIXME: What happens when you don't provide GET and POST for a handler?
-
+# FIXME: Separate handlers by file to clean things up?
 
 class LocalHandler(webapp.RequestHandler):
     """Silly wrapper to provide cleaner template rendering API"""
@@ -38,6 +38,14 @@ class MainHandler(LocalHandler):
     def get(self):
         """GET request"""
         self.render_template('index.html')
+
+
+class VoteHandler(LocalHandler):
+    """Homepage"""
+
+    def get(self):
+        """GET request"""
+        self.render_template('vote.html')
 
 
 class RegisterHandler(LocalHandler):
@@ -131,6 +139,7 @@ def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                            ('/register/(.*)', RegisterHandler),
                                            ('/callback/$', CallbackHandler),
+                                           ('/vote/$', VoteHandler),
                                         ], debug=True)
     util.run_wsgi_app(application)
 
