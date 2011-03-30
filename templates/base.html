@@ -7,7 +7,13 @@
     </head>
 
     <body>
-        {% block nav %} {% endblock %}
+        {% block nav %}
+        <ul id="nav">
+            <li><a href="/">Home</a></li> | 
+            <li><a href="/register/">Register</a></li> | 
+            <li><a href="/vote/">Vote</a></li>
+        </ul>
+        {% endblock %}
 
         {% block content %} {% endblock %}
 
