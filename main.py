@@ -22,6 +22,7 @@ CALLBACK_URL = "http://streamquality.appspot.com/callback/"
 # FIXME: What happens when you don't provide GET and POST for a handler?
 # FIXME: Separate handlers by file to clean things up?
 
+
 class LocalHandler(webapp.RequestHandler):
     """Silly wrapper to provide cleaner template rendering API"""
 
