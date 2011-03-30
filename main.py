@@ -116,7 +116,7 @@ class CallbackHandler(LocalHandler):
         user.oauth_token = user_info['token']
         user.put()
 
-        return self.redirect('/register/success/')
+        return self.redirect('/register/success')
 
     def post(self):
         """Should never get a post request for this handler"""
