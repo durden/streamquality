@@ -70,7 +70,8 @@ class VoteHandler(LocalHandler):
 
         if result.status_code != 200:
             self.render_template('vote.html',
-                    msg='Status %d returned %s' % (result.status_code, result.content))
+                            msg='Status %d returned %s' % (result.status_code,
+                            result.content))
             return
 
         json = simplejson.loads(result.content)
