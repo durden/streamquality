@@ -7,8 +7,11 @@ import cgi
 import oauth
 
 from google.appengine.ext import webapp
+from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
+
+from django.utils import simplejson
 
 from models import SQUser
 
@@ -44,9 +47,34 @@ class MainHandler(LocalHandler):
 class VoteHandler(LocalHandler):
     """Vote on tweets"""
 
-    def get(self):
-        """GET request"""
-        self.render_template('vote.html')
+    def get(self, user_name):
+        """Interface for given user to vote"""
+
+        # FIXME: Authenticate user
+        try:
+            user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        except IndexError:
+            self.render_template('vote.html', msg="%s not found" % (user_name))
+            return
+
+        # Get 20 most recent tweets from friends/user
+        url = ''.join(
+                ['http://api.twitter.com/1/statuses/friends_timeline.json'])
+
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                     CALLBACK_URL)
+        result = client.make_request(url, token=user.oauth_token,
+                                    secret=user.oauth_secret,
+                                    additional_params=None,
+                                    method=urlfetch.GET)
+
+        if result.status_code != 200:
+            self.render_template('vote.html',
+                    msg='Status %d returned %s' % (result.status_code, result.content))
+            return
+
+        json = simplejson.loads(result.content)
+        self.render_template('vote.html', user_name=user_name, result=json)
 
 
 class AboutHandler(LocalHandler):
@@ -125,7 +153,6 @@ class CallbackHandler(LocalHandler):
                                             user_info['username'])[0]
         except IndexError:
             self.redirect('/register/incomplete')
-            # FIXME: Does this return HAVE to be here?
             return
 
         user.real_name = user_info['name']
@@ -148,7 +175,7 @@ def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                            ('/register/(.*)', RegisterHandler),
                                            ('/callback/$', CallbackHandler),
-                                           ('/vote/$', VoteHandler),
+                                           ('/vote/(\w+)/$', VoteHandler),
                                            ('/about/$', AboutHandler),
                                         ], debug=True)
     util.run_wsgi_app(application)

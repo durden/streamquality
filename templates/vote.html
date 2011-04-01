@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>Voting not implemented yet.</p>
+    {% if msg %}
+        <p>{{msg}}</p>
+    {% else %}
+        <p>Voting for {{user_name}} not implemented yet.</p>
+    {% endif %}
+        <p>{{result}}</p>
 {% endblock %}
