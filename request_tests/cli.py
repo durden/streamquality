@@ -29,6 +29,7 @@ class User(object):
 # Setup stub for url fetch service
 from google.appengine.api import urlfetch
 from google.appengine.api import apiproxy_stub_map, urlfetch_stub
+
 apiproxy_stub_map.apiproxy = apiproxy_stub_map.APIProxyStubMap()
 apiproxy_stub_map.apiproxy.RegisterStub('urlfetch',
                             urlfetch_stub.URLFetchServiceStub())
