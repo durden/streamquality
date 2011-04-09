@@ -23,3 +23,6 @@ The setup is a bit clunky right now.
         import cli
         cli.try_request()
 - You can pass the try_request() method a url to hit
+
+- You can also see an example of how to use the requests_tests/cli.py script by
+  simply running it with 'python cli.py'.
