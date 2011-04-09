@@ -48,22 +48,22 @@ Over time users can see that they don't seem to ever find any value in a
 particular user or very little value relative to the rest of their stream.
 The service can then begin to suggest who you should consider unfollowing.
 
-##### Requirements for MVP
+#### Requirements for MVP
 Please see
 [TODO file](https://github.com/durden/streamquality/blob/master/TODO.markdown)
 for a list of the remaining/unimplemented requirements for the MVP.
 
-##### Interface Ideas
+#### Interface Ideas
 Show 10 tweets from 10 different users that person follows each with a thumbs
 up or down. Let user submit that and then ask if they want 10 more to vote on.
 Don't make judgement on who to follow until a user has been voted on a min of
 5 times total.
 
-###### Future Ideas
+#### Future Ideas
 Crowd source data from other users so that you get a more accurate picture of a
 person anymore data without a single person from having to vote a billion
 times.
 
-###### Debugging/Testing tools
+#### Debugging/Testing tools
 Please see the
 [README file](https://github.com/durden/streamquality/blob/master/request_tests/README.markdown) for any provided testing/debugging tools, etc.
