@@ -26,6 +26,10 @@ class User(object):
         self.name = name
         self.tweet = tweet
 
+    def __str__(self):
+        return u'name: %s, tweet: %s' % (self.name, self.tweet)
+
+
 # Setup stub for url fetch service
 from google.appengine.api import urlfetch
 from google.appengine.api import apiproxy_stub_map, urlfetch_stub
@@ -39,11 +43,8 @@ from django.utils import simplejson
 import oauth
 
 
-def try_request(url=None):
+def try_request(url='http://api.twitter.com/1/statuses/friends_timeline.json'):
     """Send request to twitter url"""
-
-    # Fill in with url you want to send request to
-    url = ''.join(['http://api.twitter.com/1/statuses/friends_timeline.json'])
 
     # request.content holds json response
     # request.headers holds http headers
@@ -58,13 +59,11 @@ def try_request(url=None):
 if __name__ == "__main__":
     json = try_request()
 
-    print json
-
     # Create list of user objects
-    #users = []
-    #for obj in json:
-    #    print obj
-        #users.append(User(name=obj['user']['name'], tweet=obj['text']))
+    users = []
+    for obj in json:
+        users.append(User(name=obj['user']['name'], tweet=obj['text']))
 
-    #for user in users:
-    #    print "name: %s ======== tweet: %s" % (user.name, user.tweet)
+    for user in users:
+        print user
+        print "--------------------------------------------------"
