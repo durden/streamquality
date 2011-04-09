@@ -63,3 +63,7 @@ Don't make judgement on who to follow until a user has been voted on a min of
 Crowd source data from other users so that you get a more accurate picture of a
 person anymore data without a single person from having to vote a billion
 times.
+
+###### Debugging/Testing tools
+Please see the
+[README file](https://github.com/durden/streamquality/blob/master/request_tests/README.markdown) for any provided testing/debugging tools, etc.
