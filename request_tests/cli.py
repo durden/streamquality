@@ -9,15 +9,14 @@ CALLBACK_URL = "http://streamquality.appspot.com/callback/"
 CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 
-# Fill in with authenticated user creds for your app
-user_token = ""
-user_secret = ""
-
 try:
-    from private_oauth_creds.tokens import *
+    from private_oauth_creds.tokens import USER_TOKEN, USER_SECRET
 except ImportError, e:
     print "ERROR: Provide private_oauth_creds module with user_token, " + \
           "user_secret variables or set these variables manually"
+    USER_TOKEN = ""
+    USER_SECRET = ""
+
 
 # Try loading json library
 try:
@@ -52,7 +51,7 @@ def try_request(url='http://api.twitter.com/1/statuses/friends_timeline.json'):
     # request.headers holds http headers
 
     client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, CALLBACK_URL)
-    result = client.make_request(url, token=user_token, secret=user_secret,
+    result = client.make_request(url, token=USER_TOKEN, secret=USER_SECRET,
                                 additional_params=None, method=urlfetch.GET)
     return json.loads(result.content)
 
@@ -60,8 +59,8 @@ def try_request(url='http://api.twitter.com/1/statuses/friends_timeline.json'):
 def pretty_print(json_res):
     """Print json result in a pretty format"""
 
-    s = json.dumps(json_res, indent=4)
-    print '\n'.join([l.rstrip() for l in  s.splitlines()])
+    jstr = json.dumps(json_res, indent=4)
+    print '\n'.join([l.rstrip() for l in  jstr.splitlines()])
 
 
 def dump_user_tweets():

@@ -17,12 +17,14 @@ The setup is a bit clunky right now.
   currently points to the standard location for AppEngine on Mac OSX.
 - Create request_tests/private_oauth_creds/tokens.py and add in your secret
   oauth tokens. Example:
-        user_secret="notarealtoken"
-        user_token="notarealtoken"
+        USER_SECRET = "notarealtoken"
+        USER_TOKEN = "notarealtoken"
 - Go into the request_tests directory and run the following:
         import cli
         cli.try_request()
-- You can pass the try_request() method a url to hit
+- You can pass the try_request() method a url to hit.
+- There is also a method provided, pretty_print(), for printing the json
+  response in a more readable format.
 
 - You can also see an example of how to use the requests_tests/cli.py script by
   simply running it with 'python cli.py'.
