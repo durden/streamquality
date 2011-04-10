@@ -19,15 +19,19 @@ except ImportError, e:
     print "ERROR: Provide private_oauth_creds module with user_token, " + \
           "user_secret variables or set these variables manually"
 
-
-# Container object
-class User(object):
-    def __init__(self, name, tweet):
-        self.name = name
-        self.tweet = tweet
-
-    def __str__(self):
-        return u'name: %s, tweet: %s' % (self.name, self.tweet)
+# Try loading json library
+try:
+    import json
+except ImportError:
+    try:
+        import simplejson as json
+    except ImportError:
+        try:
+            from django.utils import simplejson as json
+        except ImportError:
+            print "No JSON library found"
+            import sys
+            sys.exit(-1)
 
 
 # Setup stub for url fetch service
@@ -37,8 +41,6 @@ from google.appengine.api import apiproxy_stub_map, urlfetch_stub
 apiproxy_stub_map.apiproxy = apiproxy_stub_map.APIProxyStubMap()
 apiproxy_stub_map.apiproxy.RegisterStub('urlfetch',
                             urlfetch_stub.URLFetchServiceStub())
-
-from django.utils import simplejson
 
 import oauth
 
@@ -52,18 +54,24 @@ def try_request(url='http://api.twitter.com/1/statuses/friends_timeline.json'):
     client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, CALLBACK_URL)
     result = client.make_request(url, token=user_token, secret=user_secret,
                                 additional_params=None, method=urlfetch.GET)
-    json = simplejson.loads(result.content)
+    return json.loads(result.content)
 
-    return json
+
+def pretty_print(json_res):
+    """Print json result in a pretty format"""
+
+    s = json.dumps(json_res, indent=4)
+    print '\n'.join([l.rstrip() for l in  s.splitlines()])
+
+
+def dump_user_tweets():
+    """Dump user tweets as an example of how to use try_request() method"""
+
+    res = try_request()
+    for obj in res:
+        print "name: %s, tweet: %s" % (obj['user']['name'], obj['text'])
+        print "--------------------------------------------------"
+
 
 if __name__ == "__main__":
-    json = try_request()
-
-    # Create list of user objects
-    users = []
-    for obj in json:
-        users.append(User(name=obj['user']['name'], tweet=obj['text']))
-
-    for user in users:
-        print user
-        print "--------------------------------------------------"
+    dump_user_tweets()
