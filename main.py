@@ -74,8 +74,8 @@ class VoteHandler(LocalHandler):
                             result.content))
             return
 
-        json = simplejson.loads(result.content)
-        self.render_template('vote.html', user_name=user_name, result=json)
+        tweets = simplejson.loads(result.content)
+        self.render_template('vote.html', user_name=user_name, tweets=tweets)
 
 
 class AboutHandler(LocalHandler):

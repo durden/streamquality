@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %} {{user_name}}'s imperfect stream {% endblock %}
 {% block content %}
-    {% if msg %}
-        <p>{{msg}}</p>
-    {% else %}
-        <p>Voting for {{user_name}} not implemented yet.</p>
-    {% endif %}
-        <p>{{result}}</p>
+    {% for tweet in tweets %}
+        {% if forloop.first %}
+            <ul>
+        {% endif %}
+            <li>{{tweet.user.name}} ==== {{tweet.text}}</li>
+        {% if forloop.last %}
+            </ul>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
