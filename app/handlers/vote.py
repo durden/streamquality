@@ -11,7 +11,7 @@ from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
 from app.models import SQUser
 
 
-class VoteHandler(BaseHandler):
+class Vote(BaseHandler):
     """Vote on tweets"""
 
     def get(self, user_name):

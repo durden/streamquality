@@ -12,17 +12,17 @@ from google.appengine.ext.webapp import util
 def main():
     """main"""
 
-    from app.handlers.static import MainHandler, AboutHandler
-    from app.handlers.register import RegisterHandler, CallbackHandler
-    from app.handlers.vote import VoteHandler
+    from app.handlers.static import Main, About
+    from app.handlers.register import Register, Callback
+    from app.handlers.vote import Vote
 
     # FIXME: Don't require ending slash in URLS
     # FIXME: Need a catch-all for 404 error
-    application = webapp.WSGIApplication([('/', MainHandler),
-                                           ('/register/(.*)', RegisterHandler),
-                                           ('/callback/$', CallbackHandler),
-                                           ('/vote/(\w+)/$', VoteHandler),
-                                           ('/about/$', AboutHandler),
+    application = webapp.WSGIApplication([('/', Main),
+                                           ('/register/(.*)', Register),
+                                           ('/callback/$', Callback),
+                                           ('/vote/(\w+)/$', Vote),
+                                           ('/about/$', About),
                                         ], debug=True)
     util.run_wsgi_app(application)
 

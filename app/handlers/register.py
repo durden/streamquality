@@ -9,7 +9,7 @@ from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
 from app.models import SQUser
 
 
-class RegisterHandler(BaseHandler):
+class Register(BaseHandler):
     """Deal with registering user with local service"""
 
     def get(self, result=None):
@@ -50,7 +50,7 @@ class RegisterHandler(BaseHandler):
                 return self.redirect(client.get_authorization_url())
 
 
-class CallbackHandler(BaseHandler):
+class Callback(BaseHandler):
     """Handle callback from oauth with Twitter"""
 
     def get(self):
