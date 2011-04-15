@@ -7,11 +7,11 @@ import oauth
 from google.appengine.api import urlfetch
 from django.utils import simplejson
 
-from base import LocalHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
+from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
 from app.models import SQUser
 
 
-class VoteHandler(LocalHandler):
+class VoteHandler(BaseHandler):
     """Vote on tweets"""
 
     def get(self, user_name):

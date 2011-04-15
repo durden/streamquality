@@ -16,7 +16,7 @@ CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 CALLBACK_URL = "http://streamquality.appspot.com/callback/"
 
 
-class LocalHandler(webapp.RequestHandler):
+class BaseHandler(webapp.RequestHandler):
     """Silly wrapper to provide cleaner template rendering API"""
 
     def render_template(self, name, *arguments, **keywords):

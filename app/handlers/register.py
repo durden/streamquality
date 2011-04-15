@@ -5,11 +5,11 @@ Handlers to deal with registering users via oauth with Twitter.
 import cgi
 import oauth
 
-from base import LocalHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
+from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
 from app.models import SQUser
 
 
-class RegisterHandler(LocalHandler):
+class RegisterHandler(BaseHandler):
     """Deal with registering user with local service"""
 
     def get(self, result=None):
@@ -50,7 +50,7 @@ class RegisterHandler(LocalHandler):
                 return self.redirect(client.get_authorization_url())
 
 
-class CallbackHandler(LocalHandler):
+class CallbackHandler(BaseHandler):
     """Handle callback from oauth with Twitter"""
 
     def get(self):

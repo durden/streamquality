@@ -2,10 +2,10 @@
 Collection of simple 'static' handlers, which just render templates.
 """
 
-from base import LocalHandler
+from base import BaseHandler
 
 
-class MainHandler(LocalHandler):
+class MainHandler(BaseHandler):
     """Homepage"""
 
     def get(self):
@@ -13,7 +13,7 @@ class MainHandler(LocalHandler):
         self.render_template('index.html')
 
 
-class AboutHandler(LocalHandler):
+class AboutHandler(BaseHandler):
     """About page"""
 
     def get(self):
