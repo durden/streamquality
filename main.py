@@ -11,16 +11,16 @@ from google.appengine.ext.webapp import util
 def main():
     """main"""
 
-    from app.handlers.static import Main, About
+    from app.handlers.static import Main, About, Missing
     from app.handlers.register import Register, Callback
     from app.handlers.vote import Vote
 
-    # FIXME: Need a catch-all for 404 error
     application = webapp.WSGIApplication([('/', Main),
                                            ('/register/(.*)', Register),
                                            ('/callback/$', Callback),
                                            ('/vote/(\w+)/$', Vote),
                                            ('/about/$', About),
+                                           ('.*', Missing),
                                         ], debug=True)
     util.run_wsgi_app(application)
 

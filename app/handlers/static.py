@@ -19,3 +19,11 @@ class About(BaseHandler):
     def get(self):
         """GET request"""
         self.render_template('about.html')
+
+
+class Missing(BaseHandler):
+    """404 page"""
+
+    def get(self):
+        """GET request"""
+        self.render_template('404.html')
