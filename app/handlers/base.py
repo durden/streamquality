@@ -24,3 +24,13 @@ class BaseHandler(webapp.RequestHandler):
 
         path = os.path.join(os.path.dirname(__file__), TEMPLATE_DIR + name)
         self.response.out.write(template.render(path, keywords))
+
+    # Provide base get/post methods to redirect to 404 so we don't have to
+    # provide both methods for a page that only needs one, etc.
+    def get(self):
+        """GET request"""
+        self.render_template('404.html')
+
+    def post(self):
+        """POST request"""
+        self.render_template('404.html')

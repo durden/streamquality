@@ -5,8 +5,6 @@ Main application
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
-# FIXME: What happens when you don't provide GET and POST for a handler?
-
 
 def main():
     """main"""
