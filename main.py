@@ -11,16 +11,16 @@ def main():
 
     from app.handlers.static import Main, About, Missing
     from app.handlers.register import Register, Callback
-    from app.handlers.vote import Vote, VoteUp
+    from app.handlers.vote import Vote, VoteUp, VoteDown
 
     application = webapp.WSGIApplication([('/', Main),
-                                           ('/register/(.*)', Register),
-                                           ('/callback/$', Callback),
-                                           ('/about/$', About),
-                                           ('/vote/(\w+)/$', Vote),
-                                           ('/vote/(\w+)/up/(\d+)/$', VoteUp),
-                                           ('.*', Missing),
-                                        ], debug=True)
+                                   ('/register/(.*)', Register),
+                                   ('/callback/$', Callback),
+                                   ('/about/$', About),
+                                   ('/vote/(\w+)/$', Vote),
+                                   ('/vote/(\w+)/up/(\d+)/$', VoteUp),
+                                   ('/vote/(\w+)/down/(\d+)/$', VoteDown),
+                                   ('.*', Missing), ], debug=True)
     util.run_wsgi_app(application)
 
 
