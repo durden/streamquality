@@ -6,11 +6,11 @@
         {% if forloop.first %}
             <ul>
         {% endif %}
-            <li>
-                {{tweet.user.name}} ==== {{tweet.text}}
+            <li class="vote_tweet">
+                <div>{{tweet.user.name}} ==== {{tweet.text}}</div>
                 <a href="/vote/{{user_name}}/up/{{tweet.id}}/">up</a>
-                &nbsp;&nbsp;<a href="/vote/{{user_name}}/down/{{tweet.id}}/">down</a>
-                </li>
+                <a href="/vote/{{user_name}}/down/{{tweet.id}}/">down</a>
+            </li>
         {% if forloop.last %}
             </ul>
         {% endif %}

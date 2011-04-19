@@ -7,3 +7,11 @@
 #nav li {
     display: inline;
 }
+
+
+.vote_tweet {
+}
+
+.vote_tweet a {
+    padding: .5em;
+}
