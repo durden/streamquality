@@ -13,3 +13,14 @@ class SQUser(db.Model):
     oauth_token = db.StringProperty(required=True)
     real_name = db.StringProperty(required=True)
     user_name = db.StringProperty(required=True)
+
+
+class Vote(db.Model):
+    """Vote on a particular tweet"""
+
+    #voter = db.ReferenceProperty(SQUser)
+    count = db.IntegerProperty(required=True)
+    tweet_id = db.IntegerProperty(required=True)
+
+    # user_name of author of tweet voted on
+    tweet_author = db.StringProperty(required=True)
