@@ -3,6 +3,8 @@ Handler to deal with voting on tweets.
 """
 
 from app.models import Vote as VoteModel
+from app.models import SQUser
+
 from base import BaseHandler
 
 
@@ -41,8 +43,8 @@ class VoteUp(BaseHandler):
                             msg='Status %d returned' % (status_code))
             return
 
-        # FIXME: Make sure it doesn't exist first
-        vote = VoteModel(count=1, tweet_id=tid,
+        user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        vote = VoteModel(voter=user, count=1, tweet_id=tid,
                         tweet_author=tweet['user']['name'])
         vote.put()
 

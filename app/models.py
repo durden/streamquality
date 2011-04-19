@@ -18,7 +18,7 @@ class SQUser(db.Model):
 class Vote(db.Model):
     """Vote on a particular tweet"""
 
-    #voter = db.ReferenceProperty(SQUser)
+    voter = db.ReferenceProperty(SQUser)
     count = db.IntegerProperty(required=True)
     tweet_id = db.IntegerProperty(required=True)
 
