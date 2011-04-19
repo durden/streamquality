@@ -9,9 +9,18 @@
 }
 
 
+ul.tweet_list {
+    list-style-type: none;
+}
+
 .vote_tweet {
 }
 
-.vote_tweet a {
+ul.tweet_list li {
+    border-bottom: 1px solid #000;
+    padding: .5em;
+}
+
+ul.tweet_list li a {
     padding: .5em;
 }

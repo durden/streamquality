@@ -4,11 +4,15 @@
 {% block content %}
     {% for tweet in tweets %}
         {% if forloop.first %}
-            <ul>
+            <ul class="tweet_list">
         {% endif %}
-            <li class="vote_tweet">
-                <div>{{tweet.user.name}} ==== {{tweet.text}}</div>
-                <img src="{{tweet.user.profile_image_url}}"/>
+            <li>
+                <div>
+                    <img src="{{tweet.user.profile_image_url}}"/>
+                    <a href="http://www.twitter.com/{{tweet.user.screen_name}}">
+                    {{tweet.user.screen_name}}</a> {{tweet.user.name}}
+                </div>
+                <div>{{tweet.text}}</div>
                 <a href="/vote/{{user_name}}/up/{{tweet.id}}/">up</a>
                 <a href="/vote/{{user_name}}/down/{{tweet.id}}/">down</a>
             </li>
