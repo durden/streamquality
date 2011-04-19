@@ -27,6 +27,9 @@ class InvalidUser(Exception):
     pass
 
 
+# FIXME: Refactor out passing the user_name argument everywhere
+
+
 class BaseHandler(webapp.RequestHandler):
     """Silly wrapper to provide cleaner template rendering API"""
 
@@ -69,3 +72,18 @@ class BaseHandler(webapp.RequestHandler):
             return (result.status_code, None)
 
         return (result.status_code, simplejson.loads(result.content))
+
+    def get_tweet_author(self, user_name, tweet_id):
+        """
+        Get tweet author from twitter by sending request on behalf of user_name
+        """
+
+        url = ''.join(
+            ['http://api.twitter.com/1/statuses/show/%d.json' % (tweet_id)])
+
+        (status_code, tweet) = self.send_twitter_request(user_name, url)
+
+        if status_code != 200:
+            return None
+
+        return tweet['user']['name']
