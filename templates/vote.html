@@ -8,6 +8,7 @@
         {% endif %}
             <li class="vote_tweet">
                 <div>{{tweet.user.name}} ==== {{tweet.text}}</div>
+                <img src="{{tweet.user.profile_image_url}}"/>
                 <a href="/vote/{{user_name}}/up/{{tweet.id}}/">up</a>
                 <a href="/vote/{{user_name}}/down/{{tweet.id}}/">down</a>
             </li>
