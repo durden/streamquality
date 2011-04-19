@@ -2,13 +2,7 @@
 Handler to deal with voting on tweets.
 """
 
-import oauth
-
-from google.appengine.api import urlfetch
-from django.utils import simplejson
-
-from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
-from app.models import SQUser
+from base import BaseHandler
 
 
 class Vote(BaseHandler):
@@ -17,29 +11,15 @@ class Vote(BaseHandler):
     def get(self, user_name):
         """Interface for given user to vote"""
 
-        # FIXME: Authenticate user
-        try:
-            user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
-        except IndexError:
-            self.render_template('vote.html', msg="%s not found" % (user_name))
-            return
-
         # Get 20 most recent tweets from friends/user
         url = ''.join(
                 ['http://api.twitter.com/1/statuses/friends_timeline.json'])
 
-        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                     CALLBACK_URL)
-        result = client.make_request(url, token=user.oauth_token,
-                                    secret=user.oauth_secret,
-                                    additional_params=None,
-                                    method=urlfetch.GET)
+        (status_code, tweets) = self.send_twitter_request(user_name, url)
 
-        if result.status_code != 200:
+        if status_code != 200:
             self.render_template('vote.html',
-                            msg='Status %d returned %s' % (result.status_code,
-                            result.content))
+                            msg='Status %d returned' % (status_code))
             return
 
-        tweets = simplejson.loads(result.content)
         self.render_template('vote.html', user_name=user_name, tweets=tweets)

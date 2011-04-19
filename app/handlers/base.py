@@ -5,15 +5,26 @@ All handlers should inherit from here.
 """
 
 import os
+import oauth
 
+from google.appengine.api import urlfetch
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+
+from django.utils import simplejson
+
+from app.models import SQUser
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '../../templates/')
 
 CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 CALLBACK_URL = "http://streamquality.appspot.com/callback/"
+
+
+class InvalidUser(Exception):
+    """Invalid user"""
+    pass
 
 
 class BaseHandler(webapp.RequestHandler):
@@ -34,3 +45,27 @@ class BaseHandler(webapp.RequestHandler):
     def post(self):
         """POST request"""
         self.render_template('404.html')
+
+    def send_twitter_request(self, user_name, url):
+        """
+        Easily send twitter request to given url on behalf of user_name
+            - Returns status code (http return code) and json parsed response
+              (if the request was successful)
+        """
+
+        # FIXME: Authenticate user
+        try:
+            user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        except IndexError:
+            raise InvalidUser()
+
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                     CALLBACK_URL)
+        result = client.make_request(url, token=user.oauth_token,
+                                    secret=user.oauth_secret,
+                                    additional_params=None,
+                                    method=urlfetch.GET)
+        if result.status_code != 200:
+            return (result.status_code, None)
+
+        return (result.status_code, simplejson.loads(result.content))
