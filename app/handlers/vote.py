@@ -28,10 +28,10 @@ class Vote(BaseHandler):
         self.render_template('vote.html', user_name=user_name, tweets=tweets)
 
 
-class VoteUp(BaseHandler):
-    """Handle voting up a tweet"""
+class VoteTweet(BaseHandler):
+    """Base class for voting on a tweet"""
 
-    def get(self, user_name, tweet_id):
+    def vote(self, user_name, tweet_id, count):
         """Process a vote 'up' for given user_name on given tweet"""
 
         tid = int(tweet_id)
@@ -46,8 +46,26 @@ class VoteUp(BaseHandler):
         user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
 
         # FIXME: Check if a vote already exists
-        vote = VoteModel(voter=user, count=1, tweet_id=tid,
+        vote = VoteModel(voter=user, count=count, tweet_id=tid,
                         tweet_author=tweet_author)
         vote.put()
 
+
+class VoteUp(VoteTweet):
+    """Handle voting up a tweet"""
+
+    def get(self, user_name, tweet_id):
+        """Process a vote 'up' for given user_name on given tweet"""
+
+        self.vote(user_name, tweet_id, 1)
+        self.render_template('vote.html', user_name=user_name)
+
+
+class VoteDown(VoteTweet):
+    """Handle voting down a tweet"""
+
+    def get(self, user_name, tweet_id):
+        """Process a vote 'up' for given user_name on given tweet"""
+
+        self.vote(user_name, tweet_id, -1)
         self.render_template('vote.html', user_name=user_name)
