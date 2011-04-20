@@ -2,6 +2,8 @@
 Main application
 """
 
+import logging
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
@@ -12,6 +14,8 @@ def main():
     from app.handlers.static import Main, About, Missing
     from app.handlers.register import Register, Callback
     from app.handlers.vote import Vote, VoteUp, VoteDown
+
+    logging.getLogger().setLevel(logging.DEBUG)
 
     application = webapp.WSGIApplication([('/', Main),
                                    ('/register/(.*)', Register),
