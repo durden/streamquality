@@ -2,6 +2,12 @@
 
 {% block script %}
     <script type="text/javascript" src="/static/js/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript">
+        function tweet_vote(user_name, tweet_id, vote) {
+            $.getJSON("/vote/" + user_name + "/" + vote + "/" + tweet_id + "/",
+                function(json) {;});
+        }
+    </script>
 {% endblock %}
 
 {% block title %} {{user_name}}'s imperfect stream {% endblock %}
@@ -17,8 +23,10 @@
                     {{tweet.user.screen_name}}</a> {{tweet.user.name}}
                 </div>
                 <div>{{tweet.text}}</div>
-                <a href="/vote/{{user_name}}/up/{{tweet.id}}/">up</a>
-                <a href="/vote/{{user_name}}/down/{{tweet.id}}/">down</a>
+                <a href="#" onclick="tweet_vote('{{user_name}}',
+                                            '{{tweet.id}}', 'up');">up</a>
+                <a href="#" onclick="tweet_vote('{{user_name}}',
+                                            '{{tweet.id}}', 'down');">down</a>
             </li>
         {% if forloop.last %}
             </ul>
