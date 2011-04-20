@@ -35,11 +35,9 @@ class VoteTweet(BaseHandler):
         """Process a vote 'up' for given user_name on given tweet"""
 
         tid = int(tweet_id)
-        try:
-            tweet_author = self.get_tweet_author(user_name, tid)
-        except InvalidUser:
-            # FIXME
-            raise
+        tweet_author = self.get_tweet_author(user_name, tid)
+        if tweet_author is None:
+            raise Exception
 
         # Safe to use here w/o exception b/c exception would have been thrown
         # when sending above request
