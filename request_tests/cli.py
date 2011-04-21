@@ -5,7 +5,7 @@ interpreter.
 """
 
 # Fill in with values for your own app
-CALLBACK_URL = "http://streamquality.appspot.com/callback/"
+CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 
