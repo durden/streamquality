@@ -2,8 +2,6 @@
 
 The following items still remain for the MVP:
 
-- Show random tweet from a person you follow
-- Allow user to vote up/down a tweet
 - Allow user to unfollow user
 - Support some sort of login with twitter functionality so users are
   authenticated
