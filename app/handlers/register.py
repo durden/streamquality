@@ -5,11 +5,42 @@ Handlers to deal with registering users via oauth with Twitter.
 import cgi
 import oauth
 
-from base import BaseHandler, CONSUMER_KEY, CALLBACK_URL, CONSUMER_SECRET
+from base import BaseHandler, CONSUMER_KEY, CONSUMER_SECRET
+from base import REGISTER_CALLBACK_URL, SIGNIN_CALLBACK_URL
+
 from app.models import SQUser
 
 
-class Register(BaseHandler):
+class OauthHandler(BaseHandler):
+    """Simple handler to provide handling an oauth callback request"""
+
+    def handle_callback(self, request):
+        """
+        Parse out oauth creds returned from request and return them
+            - Returns tuple (username, realname, secret token, oauth token)
+        """
+
+        # FIXME: None for callback url?
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                        REGISTER_CALLBACK_URL)
+
+        # FIXME: What happens when these GET params don't exist?
+        auth_token = request.get('oauth_token')
+        auth_verifier = request.get('oauth_verifier')
+
+        try:
+            user_info = client.get_user_info(auth_token,
+                                                auth_verifier=auth_verifier)
+        except oauth.OAuthException:
+            # FIXME: Handle -- test by going straight to callback url w/o
+            # any of the GET params
+            pass
+
+        return (user_info['username'], user_info['name'], user_info['secret'],
+                user_info['token'])
+
+
+class Register(OauthHandler):
     """Deal with registering user with local service"""
 
     def get(self, result=None):
@@ -46,45 +77,57 @@ class Register(BaseHandler):
 
                 # oauth dance, which ends up at the callback url
                 client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                                CALLBACK_URL)
+                                                REGISTER_CALLBACK_URL)
                 return self.redirect(client.get_authorization_url())
 
 
-class Callback(BaseHandler):
-    """Handle callback from oauth with Twitter"""
+class RegisterCallback(OauthHandler):
+    """Handle callback from register application with Twitter"""
 
     def get(self):
         """Complete oauth with Twitter and save users tokens for future use"""
 
-        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                        CALLBACK_URL)
-
-        # FIXME: What happens when these GET params don't exist?
-        auth_token = self.request.get('oauth_token')
-        auth_verifier = self.request.get('oauth_verifier')
-
+        (user_name, real_name, oauth_secret, oauth_token) = \
+                                            self.handle_callback(self.request)
         try:
-            user_info = client.get_user_info(auth_token,
-                                                auth_verifier=auth_verifier)
-        except oauth.OAuthException:
-            # FIXME: Handle -- test by going straight to callback url w/o
-            # any of the GET params
-            pass
-
-        try:
-            user = SQUser.all().filter("user_name = ",
-                                            user_info['username'])[0]
+            user = SQUser.all().filter("user_name = ", user_name)[0]
         except IndexError:
             self.redirect('/register/incomplete')
             return
 
-        user.real_name = user_info['name']
-        user.oauth_secret = user_info['secret']
-        user.oauth_token = user_info['token']
+        user.real_name = real_name
+        user.oauth_secret = oauth_secret
+        user.oauth_token = oauth_token
         user.put()
 
         return self.redirect('/register/success')
 
-    def post(self):
-        """Should never get a post request for this handler"""
-        self.redirect('/')
+
+class Signin(OauthHandler):
+    """Handle signing a user in with twitter"""
+
+    def get(self):
+        """Start the oauth process for logging in via twitter"""
+
+        # oauth dance, which ends up at the callback url
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                        SIGNIN_CALLBACK_URL)
+        return self.redirect(client.get_authentication_url())
+
+
+class SigninCallback(OauthHandler):
+    """Handle callback from signing in with Twitter"""
+
+    def get(self):
+        """Send user to tweet voting"""
+
+        # FIXME: Save something in a session to know we are logged in
+        (user_name, real_name, oauth_secret, oauth_token) = \
+                                            self.handle_callback(self.request)
+        try:
+            user = SQUser.all().filter("user_name = ", user_name)[0]
+        except IndexError:
+            self.redirect('/register/incomplete')
+            return
+
+        return self.redirect('/vote/%s/' % (user_name))

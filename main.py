@@ -12,14 +12,16 @@ def main():
     """main"""
 
     from app.handlers.static import Main, About, Missing
-    from app.handlers.register import Register, Callback
+    from app.handlers.register import Register, RegisterCallback, Signin, SigninCallback
     from app.handlers.vote import Vote, VoteUp, VoteDown
 
     logging.getLogger().setLevel(logging.DEBUG)
 
     application = webapp.WSGIApplication([('/', Main),
                                    ('/register/(.*)', Register),
-                                   ('/callback/$', Callback),
+                                   ('/signin/', Signin),
+                                   ('/register_callback/$', RegisterCallback),
+                                   ('/signin_callback/$', SigninCallback),
                                    ('/about/$', About),
                                    ('/vote/(\w+)/$', Vote),
                                    ('/vote/(\w+)/up/(\d+)/$', VoteUp),

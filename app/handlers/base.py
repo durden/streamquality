@@ -19,7 +19,8 @@ TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '../../templates/')
 
 CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
-CALLBACK_URL = "http://streamquality.appspot.com/callback/"
+REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
+SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
 
 class InvalidUser(Exception):
@@ -62,8 +63,9 @@ class BaseHandler(webapp.RequestHandler):
         except IndexError:
             raise InvalidUser()
 
+        # FIXME: Pass None for callback?
         client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                     CALLBACK_URL)
+                                     REGISTER_CALLBACK_URL)
         result = client.make_request(url, token=user.oauth_token,
                                     secret=user.oauth_secret,
                                     additional_params=None,

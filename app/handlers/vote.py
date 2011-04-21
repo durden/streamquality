@@ -5,7 +5,7 @@ Handler to deal with voting on tweets.
 from app.models import Vote as VoteModel
 from app.models import SQUser
 
-from base import BaseHandler, InvalidUser
+from base import BaseHandler
 
 
 class Vote(BaseHandler):
