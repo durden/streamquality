@@ -341,6 +341,12 @@ class TwitterClient(OAuthClient):
     token = self._get_auth_token()
     return "http://twitter.com/oauth/authorize?oauth_token=%s" % token
 
+  def get_authentication_url(self):
+    """Get Authenciation URL."""
+
+    token = self._get_auth_token()
+    return "http://twitter.com/oauth/authenticate?oauth_token=%s" % token
+
   def _lookup_user_info(self, access_token, access_secret):
     """Lookup User Info.
 
