@@ -8,6 +8,8 @@ import oauth
 from base import BaseHandler, CONSUMER_KEY, CONSUMER_SECRET
 from base import REGISTER_CALLBACK_URL, SIGNIN_CALLBACK_URL
 
+from appengine_utilities.sessions import Session
+
 from app.models import SQUser
 
 
@@ -130,4 +132,14 @@ class SigninCallback(OauthHandler):
             self.redirect('/register/incomplete')
             return
 
+        self.session = Session()
+        self.session['username'] = user_name
+
         return self.redirect('/vote/%s/' % (user_name))
+
+
+class Logout(BaseHandler):
+    def get(self):
+        self.session = Session()
+        self.session.delete()
+        return self.redirect('/')

@@ -12,7 +12,7 @@ def main():
     """main"""
 
     from app.handlers.static import Main, About, Missing
-    from app.handlers.register import Register, RegisterCallback, Signin, SigninCallback
+    from app.handlers.register import Register, RegisterCallback, Signin, SigninCallback, Logout
     from app.handlers.vote import Vote, VoteUp, VoteDown
 
     logging.getLogger().setLevel(logging.DEBUG)
@@ -23,6 +23,7 @@ def main():
                                    ('/register_callback/$', RegisterCallback),
                                    ('/signin_callback/$', SigninCallback),
                                    ('/about/$', About),
+                                   ('/logout/$', Logout),
                                    ('/vote/(\w+)/$', Vote),
                                    ('/vote/(\w+)/up/(\d+)/$', VoteUp),
                                    ('/vote/(\w+)/down/(\d+)/$', VoteDown),
