@@ -1,13 +1,26 @@
+#!/usr/bin/python
+
 """
 Purpose of this file is mainly just for copy/paste of setup in order to test
 requests to the twitter api with the oauth module from the interactive
 interpreter.
 """
 
+import sys
+
 # Fill in with values for your own app
 CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
+
+# Fill in this with where app engine is installed on your system
+install_dir = "/Applications/GoogleAppEngineLauncher.app/Contents/" + \
+              "Resources/GoogleAppEngine-default.bundle/Contents/" + \
+              "Resources/google_appengine"
+sys.path.append(install_dir)
+sys.path.append(install_dir + "/lib/yaml/lib")
+sys.path.append(install_dir + "/lib/fancy_urllib/")
+sys.path.append(install_dir + "/lib/simplejson/")
 
 try:
     from private_oauth_creds.tokens import USER_TOKEN, USER_SECRET
@@ -18,20 +31,7 @@ except ImportError, e:
     USER_SECRET = ""
 
 
-# Try loading json library
-try:
-    import json
-except ImportError:
-    try:
-        import simplejson as json
-    except ImportError:
-        try:
-            from django.utils import simplejson as json
-        except ImportError:
-            print "No JSON library found"
-            import sys
-            sys.exit(-1)
-
+import simplejson as json
 
 # Setup stub for url fetch service
 from google.appengine.api import urlfetch
