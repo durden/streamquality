@@ -128,7 +128,7 @@ class SigninCallback(OauthHandler):
         (user_name, real_name, oauth_secret, oauth_token) = \
                                             self.handle_callback(self.request)
         try:
-            user = SQUser.all().filter("user_name = ", user_name)[0]
+            SQUser.all().filter("user_name = ", user_name)[0]
         except IndexError:
             return self.redirect('/register/incomplete')
 
