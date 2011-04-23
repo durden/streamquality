@@ -1,0 +1,50 @@
+{% extends "base-new.html" %}
+{% block header-content %}
+<h2>Cache</h2>
+<div>
+    <p>
+    Cache is used for storing pregenerated output and/or objects in the Big
+    Table datastore to minimize the amount of queries needed for page
+    displays. The idea is that complex queries that generate the same
+    results really should only be run once. Cache can be used to store
+    pregenerated value made from queries (or other calls such as
+    urlFetch()), or the query objects themselves.
+    </p>
+    <p>
+    Cache is a standard dictionary object and can be used as such. It attempts
+    to store data in both memcache, and the datastore. However, should a
+    datastore write fail, it will not try again. This is for performance
+    reasons.
+    </p>
+</div>
+{% endblock %}
+{% block content %}
+    cacheItemStr = {{ cacheItemStr }}<br />
+    cacheItemObj = {{ cacheItemObj.0 }}<br />
+    dynamickey = {{ dynamickey }}<br />
+    {{ memcacheStats }}
+<div class="code">
+<h2>webapp class</h2>
+<pre class="sh_python">{% filter escape %}class CachePage(webapp.RequestHandler):
+  def get(self):
+    self.cache = cache.Cache()
+    # test deleting a cache object
+    del self.cache["sampleStr"]
+    # set a string
+    if not "sampleStr" in self.cache:
+        self.cache["sampleStr"] = "This is a string passed to the cache"
+    # store an object
+    if not "sampleObj" in self.cache:
+        self.cache["sampleObj"] = ["this was set up as a list to test object caching"]
+    self.memcacheStats = memcache.get_stats()
+    template_values = {
+        'cacheItemStr': self.cache["sampleStr"],
+        'cacheItemObj': self.cache["sampleObj"],
+        'memcacheStats': self.memcacheStats,
+    }
+    path = os.path.join(os.path.dirname(__file__), 'templates/cache.html')
+    self.response.out.write(template.render(path, template_values))
+
+{% endfilter %}</pre>
+</div>
+{% endblock %}

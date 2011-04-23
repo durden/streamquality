@@ -1,0 +1,22 @@
+application: gaeutilities 
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /gaeutilities/css
+  static_dir: appengine_utilities/interface/css
+
+- url: /gaeutilities/.*
+  script: appengine_utilities/interface/main.py
+  login: admin
+
+- url: /yui/.*
+  script: $PYTHON_LIB/google/appengine/ext/zipserve
+
+- url: /.*
+  script: main.py
+
