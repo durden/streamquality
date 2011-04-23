@@ -37,13 +37,7 @@ class BaseHandler(webapp.RequestHandler):
 
     def __init__(self):
         """Setup session"""
-
-        try:
-            self.session = Session()
-        # Can't render to a template for error here b/c the response obj hasn't
-        # been setup
-        except Exception:
-            self.session = None
+        self.session = Session()
 
     def render_template(self, name, *arguments, **keywords):
         """High-level wrapper for loading and directing to template"""
