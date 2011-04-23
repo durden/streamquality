@@ -14,6 +14,7 @@ from google.appengine.ext.webapp import template
 from django.utils import simplejson
 
 from app.models import SQUser
+from appengine_utilities.sessions import Session
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '../../templates/')
 
@@ -32,7 +33,11 @@ class InvalidUser(Exception):
 
 
 class BaseHandler(webapp.RequestHandler):
-    """Silly wrapper to provide cleaner template rendering API"""
+    """Wrapper to provide cleaner template rendering and twitter API"""
+
+    def __init__(self):
+        """Setup session"""
+        self.session = Session()
 
     def render_template(self, name, *arguments, **keywords):
         """High-level wrapper for loading and directing to template"""
@@ -42,6 +47,7 @@ class BaseHandler(webapp.RequestHandler):
 
     # Provide base get/post methods to redirect to 404 so we don't have to
     # provide both methods for a page that only needs one, etc.
+
     def get(self):
         """GET request"""
         self.render_template('404.html')
@@ -89,3 +95,12 @@ class BaseHandler(webapp.RequestHandler):
             return None
 
         return tweet['user']['name']
+
+    def logged_in(self, user_name):
+        """See if a user is logged in already or not"""
+
+        if 'username' not in self.session or \
+            user_name != self.session['user_name']:
+            return 0
+
+        return 1

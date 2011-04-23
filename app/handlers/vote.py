@@ -7,8 +7,6 @@ from app.models import SQUser
 
 from base import BaseHandler
 
-from appengine_utilities.sessions import Session
-
 
 class Vote(BaseHandler):
     """Vote on tweets"""
@@ -27,9 +25,7 @@ class Vote(BaseHandler):
                             msg='Status %d returned' % (status_code))
             return
 
-        self.session = Session()
-
-        if 'username' not in self.session:
+        if not self.logged_in(user_name):
             return self.redirect('/')
 
         self.render_template('vote.html', user_name=user_name, tweets=tweets)

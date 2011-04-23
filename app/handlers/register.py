@@ -123,7 +123,6 @@ class SigninCallback(OauthHandler):
     def get(self):
         """Send user to tweet voting"""
 
-        # FIXME: Save something in a session to know we are logged in
         (user_name, real_name, oauth_secret, oauth_token) = \
                                             self.handle_callback(self.request)
         try:
@@ -140,6 +139,5 @@ class SigninCallback(OauthHandler):
 
 class Logout(BaseHandler):
     def get(self):
-        self.session = Session()
         self.session.delete()
         return self.redirect('/')
