@@ -37,7 +37,13 @@ class BaseHandler(webapp.RequestHandler):
 
     def __init__(self):
         """Setup session"""
-        self.session = Session()
+
+        try:
+            self.session = Session()
+        # Can't render to a template for error here b/c the response obj hasn't
+        # been setup
+        except Exception:
+            self.session = None
 
     def render_template(self, name, *arguments, **keywords):
         """High-level wrapper for loading and directing to template"""
@@ -50,11 +56,11 @@ class BaseHandler(webapp.RequestHandler):
 
     def get(self):
         """GET request"""
-        self.render_template('404.html')
+        return self.render_template('404.html')
 
     def post(self):
         """POST request"""
-        self.render_template('404.html')
+        return self.render_template('404.html')
 
     def send_twitter_request(self, user_name, url):
         """
@@ -99,7 +105,7 @@ class BaseHandler(webapp.RequestHandler):
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""
 
-        if 'username' not in self.session or \
+        if self.session is None or 'username' not in self.session or \
             user_name != self.session['user_name']:
             return 0
 

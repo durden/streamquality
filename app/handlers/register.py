@@ -22,21 +22,23 @@ class OauthHandler(BaseHandler):
             - Returns tuple (username, realname, secret token, oauth token)
         """
 
-        # FIXME: None for callback url?
-        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                        REGISTER_CALLBACK_URL)
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, None)
 
-        # FIXME: What happens when these GET params don't exist?
-        auth_token = request.get('oauth_token')
-        auth_verifier = request.get('oauth_verifier')
+        auth_token = request.get('oauth_token', default_value=None)
+        auth_verifier = request.get('oauth_verifier', default_value=None)
+
+        if auth_token is None:
+            return self.render_template('404.html', msg='Missing oauth_token')
+
+        if auth_verifier is None:
+            return self.render_template('404.html',
+                                        msg='Missing oauth_verifier')
 
         try:
             user_info = client.get_user_info(auth_token,
                                                 auth_verifier=auth_verifier)
-        except oauth.OAuthException:
-            # FIXME: Handle -- test by going straight to callback url w/o
-            # any of the GET params
-            pass
+        except oauth.OAuthException, e:
+            return self.render_template('404.html', msg=str(e))
 
         return (user_info['username'], user_info['name'], user_info['secret'],
                 user_info['token'])
@@ -71,7 +73,7 @@ class Register(OauthHandler):
             # would show up without valid tokens.  Should probably just try
             # to send them back to oauth instead of error
             if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
-                self.redirect('/register/duplicate')
+                return self.redirect('/register/duplicate')
             else:
                 user = SQUser(oauth_secret='secret', oauth_token='token',
                                 user_name=user_name, real_name='real')
@@ -128,8 +130,7 @@ class SigninCallback(OauthHandler):
         try:
             user = SQUser.all().filter("user_name = ", user_name)[0]
         except IndexError:
-            self.redirect('/register/incomplete')
-            return
+            return self.redirect('/register/incomplete')
 
         self.session = Session()
         self.session['username'] = user_name
