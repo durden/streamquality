@@ -1,5 +1,5 @@
 #nav {
-    list-style-type: none;   
+    list-style-type: none;
     margin: 0px;
     text-align: center;
 }
@@ -23,4 +23,8 @@ ul.tweet_list li {
 
 ul.tweet_list li a {
     padding: .5em;
+}
+
+img {
+    border: 0px;
 }
