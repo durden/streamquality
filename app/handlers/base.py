@@ -99,7 +99,7 @@ class BaseHandler(webapp.RequestHandler):
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""
 
-        if self.session is None or 'username' not in self.session or \
+        if self.session is None or 'user_name' not in self.session or \
             user_name != self.session['user_name']:
             return 0
 

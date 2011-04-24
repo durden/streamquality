@@ -129,12 +129,16 @@ class SigninCallback(OauthHandler):
             return self.redirect('/register/incomplete')
 
         self.session = Session()
-        self.session['username'] = user_name
+        self.session['user_name'] = user_name
 
         return self.redirect('/vote/%s/' % (user_name))
 
 
 class Logout(BaseHandler):
+    """Log user out of service"""
+
     def get(self):
+        """Remove session"""
+
         self.session.delete()
         return self.redirect('/')
