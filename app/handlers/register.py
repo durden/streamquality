@@ -68,21 +68,17 @@ class Register(OauthHandler):
         if user_name == '' or not len(user_name):
             self.redirect('/register/incomplete')
         else:
-            # FIXME: Do something about user that starts registration
-            # process, but never comes back from callback, in which case they
-            # would show up without valid tokens.  Should probably just try
-            # to send them back to oauth instead of error
-            if len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
-                return self.redirect('/register/duplicate')
-            else:
+            # If user doesn't already exist, create basic account to be
+            # completed in the callback
+            if not len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
                 user = SQUser(oauth_secret='secret', oauth_token='token',
                                 user_name=user_name, real_name='real')
                 user.put()
 
-                # oauth dance, which ends up at the callback url
-                client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                                REGISTER_CALLBACK_URL)
-                return self.redirect(client.get_authorization_url())
+            # oauth dance, which ends up at the callback url
+            client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
+                                            REGISTER_CALLBACK_URL)
+            return self.redirect(client.get_authorization_url())
 
 
 class RegisterCallback(OauthHandler):
