@@ -70,7 +70,8 @@ class Register(OauthHandler):
         else:
             # If user doesn't already exist, create basic account to be
             # completed in the callback
-            if not len(SQUser.all().filter('user_name = ', user_name).fetch(1)):
+            if not len(SQUser.all().filter('user_name = ',
+                user_name).fetch(1)):
                 user = SQUser(oauth_secret='secret', oauth_token='token',
                                 user_name=user_name, real_name='real')
                 user.put()
