@@ -28,7 +28,8 @@ class Vote(BaseHandler):
         if not self.logged_in(user_name):
             return self.redirect('/')
 
-        self.render_template('vote.html', user_name=user_name, tweets=tweets)
+        self.render_template('vote.html', user_name=user_name, tweets=tweets,
+                                logged_in=1)
 
 
 class VoteTweet(BaseHandler):
