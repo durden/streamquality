@@ -81,9 +81,9 @@ class BaseHandler(webapp.RequestHandler):
 
         return (result.status_code, simplejson.loads(result.content))
 
-    def get_tweet_author(self, user_name, tweet_id):
+    def get_tweet_info(self, user_name, tweet_id):
         """
-        Get tweet author from twitter by sending request on behalf of user_name
+        Get tweet author/text from twitter
         """
 
         url = ''.join(
@@ -92,9 +92,9 @@ class BaseHandler(webapp.RequestHandler):
         (status_code, tweet) = self.send_twitter_request(user_name, url)
 
         if status_code != 200:
-            return None
+            return (None, None)
 
-        return tweet['user']['name']
+        return (tweet['user']['name'], tweet['text'])
 
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""

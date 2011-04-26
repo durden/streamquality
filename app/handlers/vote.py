@@ -39,8 +39,8 @@ class VoteTweet(BaseHandler):
         """Process a vote 'up' for given user_name on given tweet"""
 
         tid = int(tweet_id)
-        tweet_author = self.get_tweet_author(user_name, tid)
-        if tweet_author is None:
+        (author, text) = self.get_tweet_info(user_name, tid)
+        if author is None or text is None:
             raise Exception
 
         # Safe to use here w/o exception b/c exception would have been thrown
@@ -49,7 +49,7 @@ class VoteTweet(BaseHandler):
 
         # FIXME: Check if a vote already exists
         vote = VoteModel(voter=user, count=count, tweet_id=tid,
-                        tweet_author=tweet_author)
+                        tweet_author=author, tweet_text=text)
         vote.put()
 
 

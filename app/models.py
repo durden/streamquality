@@ -24,3 +24,4 @@ class Vote(db.Model):
 
     # user_name of author of tweet voted on
     tweet_author = db.StringProperty(required=True)
+    tweet_text = db.StringProperty(required=True)
