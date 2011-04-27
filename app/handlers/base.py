@@ -89,7 +89,7 @@ class BaseHandler(webapp.RequestHandler):
         """
 
         url = ''.join(
-            ['http://api.twitter.com/1/statuses/show/%d.json' % (tweet_id)])
+            ['http://api.twitter.com/1/statuses/show/%s.json' % (tweet_id)])
 
         (status_code, tweet) = self.send_twitter_request(user_name, url)
 

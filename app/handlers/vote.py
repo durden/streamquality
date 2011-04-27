@@ -2,11 +2,12 @@
 Handler to deal with voting on tweets.
 """
 
+from django.utils import simplejson
+
 from app.models import Vote as VoteModel
 from app.models import SQUser
 
 from base import BaseHandler
-
 
 # FIXME
 debug = True
@@ -36,7 +37,8 @@ class Vote(BaseHandler):
         for tweet in tweets:
             try:
                 vote = VoteModel.all().filter('voter = ', user)\
-                                .filter('tweet_id = ', tweet['id']).fetch(1)[0]
+                                        .filter('tweet_id = ',
+                                                tweet['id_str']).fetch(1)[0]
                 tweet['vote_cnt'] = vote.count
             # Not found
             except IndexError:
@@ -52,8 +54,7 @@ class VoteTweet(BaseHandler):
     def vote(self, user_name, tweet_id, count):
         """Process a vote 'up' for given user_name on given tweet"""
 
-        tid = int(tweet_id)
-        (author, text) = self.get_tweet_info(user_name, tid)
+        (author, text) = self.get_tweet_info(user_name, tweet_id)
         if author is None or text is None:
             raise Exception
 
@@ -62,9 +63,10 @@ class VoteTweet(BaseHandler):
         user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
 
         # FIXME: Check if a vote already exists
-        vote = VoteModel(voter=user, count=count, tweet_id=tid,
+        vote = VoteModel(voter=user, count=count, tweet_id=tweet_id,
                         tweet_author=author, tweet_text=text)
         vote.put()
+        return vote
 
 
 class VoteUp(VoteTweet):
@@ -83,5 +85,6 @@ class VoteDown(VoteTweet):
     def get(self, user_name, tweet_id):
         """Process a vote 'up' for given user_name on given tweet"""
 
-        self.vote(user_name, tweet_id, -1)
-        self.render_template('vote.html', user_name=user_name)
+        new_vote = self.vote(user_name, tweet_id, -1)
+        self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
+                                                  'id': new_vote.tweet_id}))

@@ -5,7 +5,10 @@
     <script type="text/javascript">
         function tweet_vote(user_name, tweet_id, vote) {
             $.getJSON("/vote/" + user_name + "/" + vote + "/" + tweet_id + "/",
-                function(json) {;});
+                function(json) {
+                    var tweet = $("#" + json['id']);
+                    tweet.html('Vote:' + json['vote_cnt']);
+                });
         }
     </script>
 {% endblock %}
@@ -23,11 +26,11 @@
                     {{tweet.user.screen_name}}</a> {{tweet.user.name}}
                 </div>
                 <div>{{tweet.text}}</div>
-                <div>Vote:{{tweet.vote_cnt}}</div>
+                <div id="{{tweet.id_str}}">Vote:{{tweet.vote_cnt}}</div>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id}}', 'up');">up</a>
+                                            '{{tweet.id_str}}', 'up');">up</a>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id}}', 'down');">down</a>
+                                            '{{tweet.id_str}}', 'down');">down</a>
             </li>
         {% if forloop.last %}
             </ul>
