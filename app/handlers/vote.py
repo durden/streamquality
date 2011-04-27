@@ -8,6 +8,9 @@ from app.models import SQUser
 from base import BaseHandler
 
 
+# FIXME
+debug = True
+
 class Vote(BaseHandler):
     """Vote on tweets"""
 
@@ -25,8 +28,19 @@ class Vote(BaseHandler):
                             msg='Status %d returned' % (status_code))
             return
 
-        if not self.logged_in(user_name):
+        if not self.logged_in(user_name) and not debug:
             return self.redirect('/')
+
+        user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+
+        for tweet in tweets:
+            try:
+                vote = VoteModel.all().filter('voter = ', user)\
+                                .filter('tweet_id = ', tweet['id']).fetch(1)[0]
+                tweet['vote_cnt'] = vote.count
+            # Not found
+            except IndexError:
+                tweet['vote_cnt'] = 0
 
         self.render_template('vote.html', user_name=user_name, tweets=tweets,
                                 logged_in=1)

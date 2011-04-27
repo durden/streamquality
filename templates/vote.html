@@ -23,6 +23,7 @@
                     {{tweet.user.screen_name}}</a> {{tweet.user.name}}
                 </div>
                 <div>{{tweet.text}}</div>
+                <div>Vote:{{tweet.vote_cnt}}</div>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
                                             '{{tweet.id}}', 'up');">up</a>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
