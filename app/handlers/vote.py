@@ -75,9 +75,9 @@ class VoteUp(VoteTweet):
     def get(self, user_name, tweet_id):
         """Process a vote 'up' for given user_name on given tweet"""
 
-        self.vote(user_name, tweet_id, 1)
-        self.render_template('vote.html', user_name=user_name)
-
+        new_vote = self.vote(user_name, tweet_id, 1)
+        self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
+                                                  'id': new_vote.tweet_id}))
 
 class VoteDown(VoteTweet):
     """Handle voting down a tweet"""
