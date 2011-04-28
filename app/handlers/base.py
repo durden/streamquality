@@ -101,6 +101,19 @@ class BaseHandler(webapp.RequestHandler):
 
         return (tweet['user']['name'], tweet['text'])
 
+    def get_logged_in_user(self):
+        """Get logged in user (SQUser)"""
+
+        try:
+            user_name = self.session['user_name']
+        except KeyError:
+            return None
+
+        try:
+            return SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        except IndexError:
+            return None
+
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""
 

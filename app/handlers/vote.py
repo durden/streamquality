@@ -30,7 +30,7 @@ class Vote(BaseHandler):
         if not self.logged_in(user_name):
             return self.redirect('/')
 
-        user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        user = self.get_logged_in_user()
 
         for tweet in tweets:
             try:
