@@ -23,6 +23,9 @@ CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
+# FIXME
+debug = False
+
 
 class InvalidUser(Exception):
     """Invalid user"""
@@ -100,6 +103,9 @@ class BaseHandler(webapp.RequestHandler):
 
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""
+
+        if debug:
+            return 1
 
         if self.session is None or 'user_name' not in self.session or \
             user_name != self.session['user_name']:
