@@ -10,7 +10,7 @@ from app.models import SQUser
 from base import BaseHandler
 
 # FIXME
-debug = True
+debug = False
 
 class Vote(BaseHandler):
     """Vote on tweets"""
