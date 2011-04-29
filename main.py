@@ -13,7 +13,7 @@ def main():
 
     from app.handlers.static import Main, About, Missing
     from app.handlers.register import Register, RegisterCallback, Signin, SigninCallback, Logout
-    from app.handlers.vote import Vote, VoteUp, VoteDown
+    from app.handlers.vote import Vote, VoteUp, VoteDown, MyVotes
 
     logging.getLogger().setLevel(logging.DEBUG)
 
@@ -27,6 +27,7 @@ def main():
                                    ('/vote/(\w+)/$', Vote),
                                    ('/vote/(\w+)/up/(\d+)/$', VoteUp),
                                    ('/vote/(\w+)/down/(\d+)/$', VoteDown),
+                                   ('/myvotes/$', MyVotes),
                                    ('.*', Missing), ], debug=True)
     util.run_wsgi_app(application)
 

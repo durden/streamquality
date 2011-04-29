@@ -104,6 +104,13 @@ class BaseHandler(webapp.RequestHandler):
     def get_logged_in_user(self):
         """Get logged in user (SQUser)"""
 
+        if debug:
+            try:
+                return SQUser.all().filter('user_name = ',
+                                            'durden20').fetch(1)[0]
+            except IndexError:
+                return None
+
         try:
             user_name = self.session['user_name']
         except KeyError:

@@ -77,6 +77,7 @@ class VoteUp(VoteTweet):
         self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
                                                   'id': new_vote.tweet_id}))
 
+
 class VoteDown(VoteTweet):
     """Handle voting down a tweet"""
 
@@ -86,3 +87,26 @@ class VoteDown(VoteTweet):
         new_vote = self.vote(user_name, tweet_id, -1)
         self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
                                                   'id': new_vote.tweet_id}))
+
+
+class MyVotes(VoteTweet):
+    """Show logged in user tweets they've voted on grouped by author"""
+
+    def get(self):
+        """Get"""
+
+        user = self.get_logged_in_user()
+        if user is None:
+            return self.redirect('/')
+
+        votes = {}
+
+        # Aggregate scores for each author
+        for vote in VoteModel.all().filter('voter = ', user):
+            try:
+                votes[vote.tweet_author] += vote.count
+            except KeyError:
+                votes[vote.tweet_author] = vote.count
+
+        self.render_template('myvotes.html', user_name=user.user_name,
+                                votes=votes, logged_in=1)

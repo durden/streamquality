@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %} {{user_name}}'s votes {% endblock %}
+{% block content %}
+    {% for author in votes.items %}
+        {% if forloop.first %}
+            <ul class="tweet_list">
+        {% endif %}
+
+        <li>{{author.0}} -- {{author.1}}</li>
+
+        {% if forloop.last %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
