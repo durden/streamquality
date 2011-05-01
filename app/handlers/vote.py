@@ -92,8 +92,8 @@ class VoteDown(VoteTweet):
 class MyVotes(VoteTweet):
     """Show logged in user tweets they've voted on grouped by author"""
 
-    def get(self):
-        """Get"""
+    def get(self, author=""):
+        """Show votes logged in user has optionally filtered by author"""
 
         user = self.get_logged_in_user()
         if user is None:
@@ -101,8 +101,13 @@ class MyVotes(VoteTweet):
 
         votes = {}
 
+        db_votes = VoteModel.all().filter('voter = ', user)
+
+        if author != "":
+            db_votes = db_votes.filter('tweet_author = ', author)
+
         # Aggregate scores for each author
-        for vote in VoteModel.all().filter('voter = ', user):
+        for vote in db_votes:
             try:
                 votes[vote.tweet_author] += vote.count
             except KeyError:

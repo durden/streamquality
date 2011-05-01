@@ -27,7 +27,7 @@ def main():
                                    ('/vote/(\w+)/$', Vote),
                                    ('/vote/(\w+)/up/(\d+)/$', VoteUp),
                                    ('/vote/(\w+)/down/(\d+)/$', VoteDown),
-                                   ('/myvotes/$', MyVotes),
+                                   ('/myvotes/(\w*)$', MyVotes),
                                    ('.*', Missing), ], debug=True)
     util.run_wsgi_app(application)
 
