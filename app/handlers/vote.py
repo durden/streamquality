@@ -30,25 +30,23 @@ class Vote(BaseHandler):
         if not self.logged_in(user_name):
             return self.redirect('/')
 
-        user = self.get_logged_in_user()
-
         tweets = []
+        user = self.get_logged_in_user()
+        votes = VoteModel.all().filter('voter = ', user)
 
         for entry in timeline:
             tweet = {}
-            try:
-                tweet['profile_image_url'] = entry['user']['profile_image_url']
-                tweet['author_screen_name'] = entry['user']['screen_name']
-                tweet['author_name'] = entry['user']['name']
-                tweet['text'] = entry['text']
-                tweet['id'] = entry['id_str']
-                vote = VoteModel.all().filter('voter = ', user)\
-                                        .filter('tweet_id = ',
-                                                entry['id_str']).fetch(1)[0]
-                tweet['vote_cnt'] = vote.count
-            # Not found
-            except IndexError:
-                tweet['vote_cnt'] = 0
+
+            tweet['profile_image_url'] = entry['user']['profile_image_url']
+            tweet['author_screen_name'] = entry['user']['screen_name']
+            tweet['author_name'] = entry['user']['name']
+            tweet['text'] = entry['text']
+            tweet['id'] = entry['id_str']
+            tweet['vote_cnt'] = 0
+
+            for vote in votes:
+                if vote.tweet.id == entry['id_str']:
+                    tweet['vote_cnt'] = vote.count
 
             tweets.append(tweet)
 
