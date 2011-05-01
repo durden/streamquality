@@ -116,6 +116,23 @@ class MyVotes(VoteTweet):
         if author != "":
             db_votes = db_votes.filter('tweet_author = ', author)
 
+            tweets = []
+            for vote in db_votes:
+                tweet = {}
+
+                #tweet['profile_image_url'] = entry['user']['profile_image_url']
+                #tweet['author_name'] = entry['user']['name']
+                tweet['author_screen_name'] = vote.tweet_author
+                tweet['text'] = vote.tweet_text
+                tweet['id'] = vote.tweet_id
+                tweet['vote_cnt'] = vote.count
+
+                tweets.append(tweet)
+
+            self.render_template('vote.html', user_name=user.user_name,
+                                tweets=tweets, logged_in=1)
+            return
+
         # Aggregate scores for each author
         for vote in db_votes:
             try:
