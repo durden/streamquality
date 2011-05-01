@@ -24,7 +24,7 @@ class Tweet(db.Model):
     author_user_name = db.StringProperty(required=True)
     author_real_name = db.StringProperty(required=True)
     author_profile_image_url = db.StringProperty(required=True)
-    text = db.StringProperty(required=True)
+    text = db.StringProperty(required=True, multiline=True)
 
 
 class Vote(db.Model):
