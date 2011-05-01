@@ -99,7 +99,7 @@ class BaseHandler(webapp.RequestHandler):
         if status_code != 200:
             return (None, None)
 
-        return (tweet['user']['name'], tweet['text'])
+        return (tweet['user']['screen_name'], tweet['text'])
 
     def get_logged_in_user(self):
         """Get logged in user (SQUser)"""
