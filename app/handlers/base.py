@@ -94,12 +94,17 @@ class BaseHandler(webapp.RequestHandler):
         url = ''.join(
             ['http://api.twitter.com/1/statuses/show/%s.json' % (tweet_id)])
 
-        (status_code, tweet) = self.send_twitter_request(user_name, url)
+        (status_code, resp) = self.send_twitter_request(user_name, url)
 
         if status_code != 200:
-            return (None, None)
+            return None
 
-        return (tweet['user']['screen_name'], tweet['text'])
+        tweet = {}
+        tweet['user_name'] = resp['user']['screen_name']
+        tweet['real_name'] = resp['user']['name']
+        tweet['profile_image_url'] = resp['user']['profile_image_url']
+        tweet['text'] = resp['text']
+        return tweet
 
     def get_logged_in_user(self):
         """Get logged in user (SQUser)"""
