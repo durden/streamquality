@@ -21,16 +21,16 @@
         {% endif %}
             <li>
                 <div>
-                    <img src="{{tweet.user.profile_image_url}}"/>
-                    <a href="http://www.twitter.com/{{tweet.user.screen_name}}">
-                    {{tweet.user.screen_name}}</a> {{tweet.user.name}}
+                    <img src="{{tweet.profile_image_url}}"/>
+                    <a href="http://www.twitter.com/{{tweet.author_screen_name}}">
+                    {{tweet.author_screen_name}}</a> {{tweet.author_name}}
                 </div>
                 <div>{{tweet.text}}</div>
-                <div id="{{tweet.id_str}}">Vote:{{tweet.vote_cnt}}</div>
+                <div id="{{tweet.id}}">Vote:{{tweet.vote_cnt}}</div>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id_str}}', 'up');">up</a>
+                                            '{{tweet.id}}', 'up');">up</a>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id_str}}', 'down');">down</a>
+                                            '{{tweet.id}}', 'down');">down</a>
             </li>
         {% if forloop.last %}
             </ul>

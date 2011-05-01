@@ -20,7 +20,7 @@ class Vote(BaseHandler):
         url = ''.join(
                 ['http://api.twitter.com/1/statuses/friends_timeline.json'])
 
-        (status_code, tweets) = self.send_twitter_request(user_name, url)
+        (status_code, timeline) = self.send_twitter_request(user_name, url)
 
         if status_code != 200:
             self.render_template('vote.html',
@@ -32,15 +32,25 @@ class Vote(BaseHandler):
 
         user = self.get_logged_in_user()
 
-        for tweet in tweets:
+        tweets = []
+
+        for entry in timeline:
+            tweet = {}
             try:
+                tweet['profile_image_url'] = entry['user']['profile_image_url']
+                tweet['author_screen_name'] = entry['user']['screen_name']
+                tweet['author_name'] = entry['user']['name']
+                tweet['text'] = entry['text']
+                tweet['id'] = entry['id_str']
                 vote = VoteModel.all().filter('voter = ', user)\
                                         .filter('tweet_id = ',
-                                                tweet['id_str']).fetch(1)[0]
+                                                entry['id_str']).fetch(1)[0]
                 tweet['vote_cnt'] = vote.count
             # Not found
             except IndexError:
                 tweet['vote_cnt'] = 0
+
+            tweets.append(tweet)
 
         self.render_template('vote.html', user_name=user_name, tweets=tweets,
                                 logged_in=1)
