@@ -23,8 +23,6 @@ CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
-debug = False
-
 
 class NotLoggedIn(Exception):
     """Not logged in"""
@@ -105,7 +103,7 @@ class BaseHandler(webapp.RequestHandler):
     def get_logged_in_user(self):
         """Get logged in user (SQUser)"""
 
-        if debug:
+        if self.debug_mode():
             try:
                 return SQUser.all().filter('user_name = ',
                                             'durden20').fetch(1)[0]
@@ -125,7 +123,7 @@ class BaseHandler(webapp.RequestHandler):
     def logged_in(self, user_name):
         """See if a user is logged in already or not"""
 
-        if debug:
+        if self.debug_mode():
             return 1
 
         if self.session is None or 'user_name' not in self.session or \
@@ -133,3 +131,13 @@ class BaseHandler(webapp.RequestHandler):
             return 0
 
         return 1
+
+    def debug_mode(self):
+        """Determine if debug mode is on or not"""
+
+        if self.request.url.startswith('http://localhost'):
+            import logging
+            logging.debug("In debug mode")
+            return 1
+        else:
+            return 0
