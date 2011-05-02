@@ -7,7 +7,7 @@ from django.utils import simplejson
 from app.models import Vote as VoteModel
 from app.models import SQUser, Tweet
 
-from base import BaseHandler
+from base import BaseHandler, NotLoggedIn
 
 
 class Vote(BaseHandler):
@@ -20,7 +20,10 @@ class Vote(BaseHandler):
         url = ''.join(
                 ['http://api.twitter.com/1/statuses/friends_timeline.json'])
 
-        (status_code, timeline) = self.send_twitter_request(user_name, url)
+        try:
+            (status_code, timeline) = self.send_twitter_request(user_name, url)
+        except NotLoggedIn:
+            return self.render_template('404.html', msg="Must be logged in")
 
         if status_code != 200:
             self.render_template('vote.html',

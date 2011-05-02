@@ -27,8 +27,8 @@ SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 debug = False
 
 
-class InvalidUser(Exception):
-    """Invalid user"""
+class NotLoggedIn(Exception):
+    """Not logged in"""
     pass
 
 
@@ -68,15 +68,12 @@ class BaseHandler(webapp.RequestHandler):
               (if the request was successful)
         """
 
-        # FIXME: Authenticate user
-        try:
-            user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
-        except IndexError:
-            raise InvalidUser()
+        if not self.logged_in(user_name):
+            raise NotLoggedIn()
 
-        # FIXME: Pass None for callback?
-        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
-                                     REGISTER_CALLBACK_URL)
+        user = self.get_logged_in_user()
+
+        client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, None)
         result = client.make_request(url, token=user.oauth_token,
                                     secret=user.oauth_secret,
                                     additional_params=None,
