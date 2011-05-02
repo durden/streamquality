@@ -23,7 +23,6 @@ CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
-# FIXME
 debug = False
 
 
