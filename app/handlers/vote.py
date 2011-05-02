@@ -115,7 +115,7 @@ class MyVotes(VoteTweet):
 
         user = self.get_logged_in_user()
         if user is None:
-            return self.redirect('/')
+            return self.render_template('404.html', msg="Must be logged in")
 
         votes = {}
 

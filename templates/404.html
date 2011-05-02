@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p> Error: {{msg }}</p>
-    <p>Page not found.</p>
+    {% if msg %}
+        <p> Error: {{ msg }}</p>
+    {% else %}
+        <p>Page not found.</p>
+    {% endif %}
 {% endblock %}
