@@ -7,6 +7,4 @@ The following items still remain for the MVP:
     - Find good way to pass session variables into all templates, preferably
       without having to explicitly put argument in all render calls.
 - New pages
-    - Show users whose tweets you've voted on
-    - Show all tweets you've voted on for a specific person (link from above)
     - Show unfollow recommendations
