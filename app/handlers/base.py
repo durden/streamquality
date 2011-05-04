@@ -45,6 +45,16 @@ class BaseHandler(webapp.RequestHandler):
         """High-level wrapper for loading and directing to template"""
 
         path = os.path.join(os.path.dirname(__file__), TEMPLATE_DIR + name)
+
+        # Going to tack on whether user is logged in or not, but complain if
+        # we are overriding someone else's variable
+        if 'logged_in' in keywords:
+            raise KeyError
+
+        keywords['logged_in'] = 0
+        if self.get_logged_in_user() is not None:
+            keywords['logged_in'] = 1
+
         self.response.out.write(template.render(path, keywords))
 
     # Provide base get/post methods to redirect to 404 so we don't have to

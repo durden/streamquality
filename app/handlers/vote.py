@@ -53,8 +53,7 @@ class Vote(BaseHandler):
 
             tweets.append(tweet)
 
-        self.render_template('vote.html', user_name=user_name, tweets=tweets,
-                                logged_in=1)
+        self.render_template('vote.html', user_name=user_name, tweets=tweets)
 
 
 class VoteTweet(BaseHandler):
@@ -139,7 +138,7 @@ class MyVotes(VoteTweet):
                 tweets.append(tweet)
 
             self.render_template('vote.html', user_name=user.user_name,
-                                tweets=tweets, logged_in=1)
+                                tweets=tweets)
             return
 
         # Aggregate scores for each author
@@ -150,4 +149,4 @@ class MyVotes(VoteTweet):
                 votes[vote.tweet.author_user_name] = vote.count
 
         self.render_template('myvotes.html', user_name=user.user_name,
-                                votes=votes, logged_in=1)
+                                votes=votes)
