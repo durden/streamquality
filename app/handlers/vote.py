@@ -31,7 +31,7 @@ class Vote(BaseHandler):
             return
 
         if not self.logged_in(user_name):
-            return self.redirect('/')
+            return self.render_template('404.html', msg="Must be logged in")
 
         tweets = []
         user = self.get_logged_in_user()
