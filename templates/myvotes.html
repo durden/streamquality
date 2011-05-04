@@ -7,7 +7,7 @@
             <ul class="tweet_list">
         {% endif %}
 
-        <li><a href="/myvotes/{{author.0}}">{{author.0}}</a> -- {{author.1}}</li>
+        <li><a href="/myvotes/{{logged_in_user}}/{{author.0}}">{{author.0}}</a> -- {{author.1}}</li>
 
         {% if forloop.last %}
             </ul>

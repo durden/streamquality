@@ -109,15 +109,15 @@ class VoteDown(VoteTweet):
 class MyVotes(VoteTweet):
     """Show logged in user tweets they've voted on grouped by author"""
 
-    def get(self, author=""):
+    def get(self, user_name, author=""):
         """Show votes logged in user has optionally filtered by author"""
 
-        user = self.get_logged_in_user()
-        if user is None:
+        if not self.logged_in(user_name):
             return self.render_template('404.html', msg="Must be logged in")
 
         votes = {}
 
+        user = self.get_logged_in_user()
         db_votes = VoteModel.all().filter('voter = ', user)
 
         if author != "":
