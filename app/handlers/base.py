@@ -51,10 +51,8 @@ class BaseHandler(webapp.RequestHandler):
         if 'logged_in' in keywords:
             raise KeyError
 
-        keywords['logged_in'] = 0
         user = self.get_logged_in_user()
         if user is not None:
-            keywords['logged_in'] = 1
             keywords['logged_in_user'] = user.user_name
 
         self.response.out.write(template.render(path, keywords))
