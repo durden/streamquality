@@ -29,9 +29,6 @@ class NotLoggedIn(Exception):
     pass
 
 
-# FIXME: Refactor out passing the user_name argument everywhere
-
-
 class BaseHandler(webapp.RequestHandler):
     """Wrapper to provide cleaner template rendering and twitter API"""
 
