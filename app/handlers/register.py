@@ -56,6 +56,8 @@ class Register(OauthHandler):
                 msg = "User registered!"
             elif result == "incomplete":
                 msg = "Please fill out all required fields"
+            elif result == "not_registered":
+                msg = "Please register"
             elif result == "duplicate":
                 msg = "User already registered"
 
@@ -93,8 +95,7 @@ class RegisterCallback(OauthHandler):
         try:
             user = SQUser.all().filter("user_name = ", user_name)[0]
         except IndexError:
-            self.redirect('/register/incomplete')
-            return
+            return self.redirect('/register/not_registered')
 
         user.real_name = real_name
         user.oauth_secret = oauth_secret
@@ -127,7 +128,7 @@ class SigninCallback(OauthHandler):
         try:
             SQUser.all().filter("user_name = ", user_name)[0]
         except IndexError:
-            return self.redirect('/register/incomplete')
+            return self.redirect('/register/not_registered')
 
         self.session = Session()
         self.session['user_name'] = user_name
