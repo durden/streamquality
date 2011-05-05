@@ -70,16 +70,23 @@ class VoteTweet(BaseHandler):
         # when sending above request
         user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
 
-        # FIXME: See if tweet exists
-        tweet = Tweet(id=tweet_id,
+        try:
+            tweet = Tweet.all().filter('id = ', tweet_id).fetch(1)[0]
+        except IndexError:
+            tweet = Tweet(id=tweet_id,
                     author_profile_image_url=tweet_info['profile_image_url'],
                     author_real_name=tweet_info['real_name'],
                     author_user_name=tweet_info['user_name'],
                     text=tweet_info['text'])
-        tweet.put()
+            tweet.put()
 
-        # FIXME: Check if a vote already exists
-        vote = VoteModel(voter=user, count=count, tweet=tweet)
+        try:
+            vote = VoteModel.all().filter('voter = ', user).filter('tweet = ',
+                                                            tweet).fetch(1)[0]
+            vote.count = count
+        except IndexError:
+            vote = VoteModel(voter=user, count=count, tweet=tweet)
+
         vote.put()
         return vote
 
