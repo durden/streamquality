@@ -2,7 +2,9 @@
 
 {% block content %}
     <p>Hello</p>
+    {% if not logged_in_user %}
     <a href="/signin/">
         <img src="/static/img/twitter_signin.png" width="151" height="24"/>
     </a>
+    {% endif %}
 {% endblock %}
