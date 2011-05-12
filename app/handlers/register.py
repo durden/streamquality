@@ -136,6 +136,22 @@ class SigninCallback(OauthHandler):
         return self.redirect('/vote/%s/' % (user_name))
 
 
+class Unfollow(BaseHandler):
+    """Handle unfollowing"""
+
+    def get(self, unfollow_user_name):
+        """Send unfollow request"""
+
+        user = self.get_logged_in_user()
+        url = ''.join(
+            ['http://api.twitter.com/1/friendships/destroy.xml?screen_name=%s' % (unfollow_user_name)])
+        (status_code, resp) = self.send_twitter_request(user.user_name, url)
+
+        if status_code != 200:
+            return self.render_template('404.html', msg=status_code)
+
+        return self.redirect('/myvotes/%s/' % (user.user_name))
+
 class Logout(BaseHandler):
     """Log user out of service"""
 
