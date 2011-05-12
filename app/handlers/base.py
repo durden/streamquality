@@ -24,6 +24,9 @@ REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
 
+# FIXME: Use logged in user instead of user_name arg
+# FIXME: Make 404.html a more generic error page with a message, not 404
+
 class NotLoggedIn(Exception):
     """Not logged in"""
     pass
