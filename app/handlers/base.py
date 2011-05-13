@@ -24,8 +24,6 @@ REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
 
-# FIXME: Make 404.html a more generic error page with a message, not 404
-
 class NotLoggedIn(Exception):
     """Not logged in"""
     pass
@@ -56,16 +54,16 @@ class BaseHandler(webapp.RequestHandler):
 
         self.response.out.write(template.render(path, keywords))
 
-    # Provide base get/post methods to redirect to 404 so we don't have to
+    # Provide base get/post methods to redirect to error so we don't have to
     # provide both methods for a page that only needs one, etc.
 
     def get(self):
         """GET request"""
-        return self.render_template('404.html')
+        return self.render_template('error.html')
 
     def post(self):
         """POST request"""
-        return self.render_template('404.html')
+        return self.render_template('error.html')
 
     def send_twitter_request(self, url, additional_params=None,
                                 method=urlfetch.GET):

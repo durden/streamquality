@@ -23,7 +23,7 @@ class Vote(BaseHandler):
         try:
             (status_code, timeline) = self.send_twitter_request(url)
         except NotLoggedIn:
-            return self.render_template('404.html', msg="Must be logged in")
+            return self.render_template('error.html', msg="Must be logged in")
 
         if status_code != 200:
             self.render_template('vote.html',
@@ -120,7 +120,7 @@ class MyVotes(VoteTweet):
 
         user = self.get_logged_in_user()
         if user is None:
-            return self.render_template('404.html', msg="Must be logged in")
+            return self.render_template('error.html', msg="Must be logged in")
 
         votes = {}
 

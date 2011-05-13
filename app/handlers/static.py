@@ -26,4 +26,4 @@ class Missing(BaseHandler):
 
     def get(self):
         """GET request"""
-        self.render_template('404.html')
+        self.render_template('error.html')

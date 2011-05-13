@@ -30,17 +30,17 @@ class OauthHandler(BaseHandler):
         auth_verifier = request.get('oauth_verifier', default_value=None)
 
         if auth_token is None:
-            return self.render_template('404.html', msg='Missing oauth_token')
+            return self.render_template('error.html', msg='Missing oauth_token')
 
         if auth_verifier is None:
-            return self.render_template('404.html',
+            return self.render_template('error.html',
                                         msg='Missing oauth_verifier')
 
         try:
             user_info = client.get_user_info(auth_token,
                                                 auth_verifier=auth_verifier)
         except oauth.OAuthException, e:
-            return self.render_template('404.html', msg=str(e))
+            return self.render_template('error.html', msg=str(e))
 
         return (user_info['username'], user_info['name'], user_info['secret'],
                 user_info['token'])
@@ -151,7 +151,7 @@ class Unfollow(BaseHandler):
                         method=urlfetch.POST)
 
         if status_code != 200:
-            return self.render_template('404.html', msg=status_code)
+            return self.render_template('error.html', msg=status_code)
 
         return self.redirect('/myvotes/%s/' % (user.user_name))
 
