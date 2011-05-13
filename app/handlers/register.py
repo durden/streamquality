@@ -116,7 +116,7 @@ class Signin(OauthHandler):
         # oauth dance, which ends up at the callback url
         client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET,
                                         SIGNIN_CALLBACK_URL)
-        return self.redirect(client.get_authentication_url())
+        return self.redirect(client.get_authenticate_url())
 
 
 class SigninCallback(OauthHandler):
