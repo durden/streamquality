@@ -68,7 +68,8 @@ class BaseHandler(webapp.RequestHandler):
         """POST request"""
         return self.render_template('404.html')
 
-    def send_twitter_request(self, user_name, url):
+    def send_twitter_request(self, user_name, url,
+                                additional_params=None, method=urlfetch.GET):
         """
         Easily send twitter request to given url on behalf of user_name
             - Returns status code (http return code) and json parsed response
@@ -83,12 +84,18 @@ class BaseHandler(webapp.RequestHandler):
         client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, None)
         result = client.make_request(url, token=user.oauth_token,
                                     secret=user.oauth_secret,
-                                    additional_params=None,
-                                    method=urlfetch.GET)
+                                    additional_params=additional_params,
+                                    method=method)
         if result.status_code != 200:
             return (result.status_code, None)
 
-        return (result.status_code, simplejson.loads(result.content))
+        # Not all requests have content in status (i.e. unfollowing, etc.)
+        try:
+            json = simplejson.loads(result.content)
+        except ValueError:
+            json = None
+
+        return (result.status_code, json)
 
     def get_tweet_info(self, user_name, tweet_id):
         """

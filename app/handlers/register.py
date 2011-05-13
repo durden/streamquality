@@ -2,6 +2,8 @@
 Handlers to deal with registering users via oauth with Twitter.
 """
 
+from google.appengine.api import urlfetch
+
 import cgi
 import oauth
 
@@ -143,14 +145,16 @@ class Unfollow(BaseHandler):
         """Send unfollow request"""
 
         user = self.get_logged_in_user()
-        url = ''.join(
-            ['http://api.twitter.com/1/friendships/destroy.xml?screen_name=%s' % (unfollow_user_name)])
-        (status_code, resp) = self.send_twitter_request(user.user_name, url)
+        url = ''.join(['http://api.twitter.com/1/friendships/destroy.xml'])
+        (status_code, resp) = self.send_twitter_request(user.user_name, url,
+                        additional_params={'screen_name': unfollow_user_name},
+                        method=urlfetch.POST)
 
         if status_code != 200:
             return self.render_template('404.html', msg=status_code)
 
         return self.redirect('/myvotes/%s/' % (user.user_name))
+
 
 class Logout(BaseHandler):
     """Log user out of service"""
