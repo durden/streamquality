@@ -21,6 +21,7 @@ sys.path.append(install_dir)
 sys.path.append(install_dir + "/lib/yaml/lib")
 sys.path.append(install_dir + "/lib/fancy_urllib/")
 sys.path.append(install_dir + "/lib/simplejson/")
+sys.path.append("../app/handlers/")
 
 try:
     from private_oauth_creds.tokens import USER_TOKEN, USER_SECRET
