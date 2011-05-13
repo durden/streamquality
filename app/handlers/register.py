@@ -146,14 +146,14 @@ class Unfollow(BaseHandler):
 
         user = self.get_logged_in_user()
         url = ''.join(['http://api.twitter.com/1/friendships/destroy.xml'])
-        (status_code, resp) = self.send_twitter_request(user.user_name, url,
+        (status_code, resp) = self.send_twitter_request(url,
                         additional_params={'screen_name': unfollow_user_name},
                         method=urlfetch.POST)
 
         if status_code != 200:
             return self.render_template('error.html', msg=status_code)
 
-        return self.redirect('/myvotes/%s/' % (user.user_name))
+        return self.redirect('/myvotes/' % (user.user_name))
 
 
 class Logout(BaseHandler):
