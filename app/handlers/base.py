@@ -24,7 +24,6 @@ REGISTER_CALLBACK_URL = "http://streamquality.appspot.com/register_callback/"
 SIGNIN_CALLBACK_URL = "http://streamquality.appspot.com/signin_callback/"
 
 
-# FIXME: Use logged in user instead of user_name arg
 # FIXME: Make 404.html a more generic error page with a message, not 404
 
 class NotLoggedIn(Exception):
@@ -68,18 +67,17 @@ class BaseHandler(webapp.RequestHandler):
         """POST request"""
         return self.render_template('404.html')
 
-    def send_twitter_request(self, user_name, url,
-                                additional_params=None, method=urlfetch.GET):
+    def send_twitter_request(self, url, additional_params=None,
+                                method=urlfetch.GET):
         """
-        Easily send twitter request to given url on behalf of user_name
+        Easily send twitter request to given url on behalf of logged in user
             - Returns status code (http return code) and json parsed response
               (if the request was successful)
         """
 
-        if not self.logged_in(user_name):
-            raise NotLoggedIn()
-
         user = self.get_logged_in_user()
+        if user is None:
+            raise NotLoggedIn()
 
         client = oauth.TwitterClient(CONSUMER_KEY, CONSUMER_SECRET, None)
         result = client.make_request(url, token=user.oauth_token,
@@ -97,7 +95,7 @@ class BaseHandler(webapp.RequestHandler):
 
         return (result.status_code, json)
 
-    def get_tweet_info(self, user_name, tweet_id):
+    def get_tweet_info(self, tweet_id):
         """
         Get tweet author/text from twitter
         """
@@ -105,7 +103,7 @@ class BaseHandler(webapp.RequestHandler):
         url = ''.join(
             ['http://api.twitter.com/1/statuses/show/%s.json' % (tweet_id)])
 
-        (status_code, resp) = self.send_twitter_request(user_name, url)
+        (status_code, resp) = self.send_twitter_request(url)
 
         if status_code != 200:
             return None

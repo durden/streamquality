@@ -26,10 +26,10 @@ def main():
                                    ('/signin_callback/$', SigninCallback),
                                    ('/about/$', About),
                                    ('/logout/$', Logout),
-                                   ('/vote/(\w+)/$', Vote),
-                                   ('/vote/(\w+)/up/(\d+)/$', VoteUp),
-                                   ('/vote/(\w+)/down/(\d+)/$', VoteDown),
-                                   ('/myvotes/(\w+)/(\w*)$', MyVotes),
+                                   ('/vote/$', Vote),
+                                   ('/vote/up/(\d+)/$', VoteUp),
+                                   ('/vote/down/(\d+)/$', VoteDown),
+                                   ('/myvotes/(\w*)$', MyVotes),
                                    ('/unfollow/(\w+)/$', Unfollow),
                                    ('.*', Missing), ], debug=True)
     util.run_wsgi_app(application)

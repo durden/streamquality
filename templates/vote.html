@@ -4,7 +4,7 @@
     <script type="text/javascript" src="/static/js/jquery-1.5.2.min.js"></script>
     <script type="text/javascript">
         function tweet_vote(user_name, tweet_id, vote) {
-            $.getJSON("/vote/" + user_name + "/" + vote + "/" + tweet_id + "/",
+            $.getJSON("/vote/" + vote + "/" + tweet_id + "/",
                 function(json) {
                     var tweet = $("#" + json['id']);
                     tweet.html('Vote:' + json['vote_cnt']);

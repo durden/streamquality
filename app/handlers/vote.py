@@ -13,15 +13,15 @@ from base import BaseHandler, NotLoggedIn
 class Vote(BaseHandler):
     """Vote on tweets"""
 
-    def get(self, user_name):
-        """Interface for given user to vote"""
+    def get(self):
+        """Interface for logged in user to vote"""
 
         # Get 20 most recent tweets from friends/user
         url = ''.join(
                 ['http://api.twitter.com/1/statuses/friends_timeline.json'])
 
         try:
-            (status_code, timeline) = self.send_twitter_request(user_name, url)
+            (status_code, timeline) = self.send_twitter_request(url)
         except NotLoggedIn:
             return self.render_template('404.html', msg="Must be logged in")
 
@@ -29,9 +29,6 @@ class Vote(BaseHandler):
             self.render_template('vote.html',
                             msg='Status %d returned' % (status_code))
             return
-
-        if not self.logged_in(user_name):
-            return self.render_template('404.html', msg="Must be logged in")
 
         tweets = []
         user = self.get_logged_in_user()
@@ -53,22 +50,24 @@ class Vote(BaseHandler):
 
             tweets.append(tweet)
 
-        self.render_template('vote.html', user_name=user_name, tweets=tweets)
+        self.render_template('vote.html', user_name=user.user_name,
+                             tweets=tweets)
 
 
 class VoteTweet(BaseHandler):
     """Base class for voting on a tweet"""
 
-    def vote(self, user_name, tweet_id, count):
+    def vote(self, tweet_id, count):
         """Process a vote 'up' for given user_name on given tweet"""
 
-        tweet_info = self.get_tweet_info(user_name, tweet_id)
+        tweet_info = self.get_tweet_info(tweet_id)
         if tweet_info is None:
             raise Exception
 
-        # Safe to use here w/o exception b/c exception would have been thrown
-        # when sending above request
-        user = SQUser.all().filter('user_name = ', user_name).fetch(1)[0]
+        # FIXME: Handle error in AJAX request?
+        user = self.get_logged_in_user()
+        if user is None:
+            return None
 
         try:
             tweet = Tweet.all().filter('id = ', tweet_id).fetch(1)[0]
@@ -94,10 +93,10 @@ class VoteTweet(BaseHandler):
 class VoteUp(VoteTweet):
     """Handle voting up a tweet"""
 
-    def get(self, user_name, tweet_id):
-        """Process a vote 'up' for given user_name on given tweet"""
+    def get(self, tweet_id):
+        """Process a vote 'up' on given tweet"""
 
-        new_vote = self.vote(user_name, tweet_id, 1)
+        new_vote = self.vote(tweet_id, 1)
         self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
                                                   'id': new_vote.tweet.id}))
 
@@ -105,10 +104,10 @@ class VoteUp(VoteTweet):
 class VoteDown(VoteTweet):
     """Handle voting down a tweet"""
 
-    def get(self, user_name, tweet_id):
-        """Process a vote 'up' for given user_name on given tweet"""
+    def get(self, tweet_id):
+        """Process a vote 'down' on given tweet"""
 
-        new_vote = self.vote(user_name, tweet_id, -1)
+        new_vote = self.vote(tweet_id, -1)
         self.response.out.write(simplejson.dumps({'vote_cnt': new_vote.count,
                                                   'id': new_vote.tweet.id}))
 
@@ -116,15 +115,15 @@ class VoteDown(VoteTweet):
 class MyVotes(VoteTweet):
     """Show logged in user tweets they've voted on grouped by author"""
 
-    def get(self, user_name, author=""):
+    def get(self, author=""):
         """Show votes logged in user has optionally filtered by author"""
 
-        if not self.logged_in(user_name):
+        user = self.get_logged_in_user()
+        if user is None:
             return self.render_template('404.html', msg="Must be logged in")
 
         votes = {}
 
-        user = self.get_logged_in_user()
         db_votes = VoteModel.all().filter('voter = ', user)
 
         if author != "":
