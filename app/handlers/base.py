@@ -108,6 +108,7 @@ class BaseHandler(webapp.RequestHandler):
             return None
 
         tweet = {}
+        tweet['id'] = tweet_id
         tweet['user_name'] = resp['user']['screen_name']
         tweet['real_name'] = resp['user']['name']
         tweet['profile_image_url'] = resp['user']['profile_image_url']

@@ -24,9 +24,8 @@ class Vote(BaseHandler):
             return self.render_template('error.html', msg="Must be logged in")
 
         if status_code != 200:
-            self.render_template('vote.html',
+            return self.render_template('vote.html',
                             msg='Status %d returned' % (status_code))
-            return
 
         tweets = []
         user = self.get_logged_in_user()
@@ -67,25 +66,8 @@ class VoteTweet(BaseHandler):
         if user is None:
             return None
 
-        try:
-            tweet = Tweet.all().filter('id = ', tweet_id).fetch(1)[0]
-        except IndexError:
-            tweet = Tweet(id=tweet_id,
-                    author_profile_image_url=tweet_info['profile_image_url'],
-                    author_real_name=tweet_info['real_name'],
-                    author_user_name=tweet_info['user_name'],
-                    text=tweet_info['text'])
-            tweet.put()
-
-        try:
-            vote = VoteModel.all().filter('voter = ', user).filter('tweet = ',
-                                                            tweet).fetch(1)[0]
-            vote.count = count
-        except IndexError:
-            vote = VoteModel(voter=user, count=count, tweet=tweet)
-
-        vote.put()
-        return vote
+        tweet = Tweet.get_or_create(tweet_info)
+        return VoteModel.get_or_create(user, tweet, count)
 
 
 class VoteUp(VoteTweet):
@@ -120,37 +102,11 @@ class MyVotes(VoteTweet):
         if user is None:
             return self.render_template('error.html', msg="Must be logged in")
 
-        votes = {}
-
-        db_votes = VoteModel.all().filter('voter = ', user)
-
         if author != "":
-            tweets = []
-            for vote in db_votes:
-                tweet = {}
+            tweets = VoteModel.get_votes_by_author(user, author)
+            return self.render_template('vote.html', user_name=user.user_name,
+                                        tweets=tweets)
 
-                if vote.tweet.author_user_name != author:
-                    continue
-
-                tweet['profile_image_url'] = vote.tweet.author_profile_image_url
-                tweet['author_name'] = vote.tweet.author_real_name
-                tweet['author_screen_name'] = vote.tweet.author_user_name
-                tweet['text'] = vote.tweet.text
-                tweet['id'] = vote.tweet.id
-                tweet['vote_cnt'] = vote.count
-
-                tweets.append(tweet)
-
-            self.render_template('vote.html', user_name=user.user_name,
-                                tweets=tweets)
-            return
-
-        # Aggregate scores for each author
-        for vote in db_votes:
-            try:
-                votes[vote.tweet.author_user_name] += vote.count
-            except KeyError:
-                votes[vote.tweet.author_user_name] = vote.count
-
+        votes = VoteModel.aggregate_votes_by_author(user, author)
         self.render_template('myvotes.html', user_name=user.user_name,
                                 votes=votes)
