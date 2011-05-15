@@ -5,14 +5,14 @@ Handlers to deal with registering users via oauth with Twitter.
 from google.appengine.api import urlfetch
 
 import cgi
-import oauth
 
-from base import BaseHandler, CONSUMER_KEY, CONSUMER_SECRET
-from base import REGISTER_CALLBACK_URL, SIGNIN_CALLBACK_URL
-
-from appengine_utilities.sessions import Session
-
+from app.handlers import oauth
 from app.models import SQUser
+
+from app.handlers.base import BaseHandler, CONSUMER_KEY, CONSUMER_SECRET
+from app.handlers.base import REGISTER_CALLBACK_URL, SIGNIN_CALLBACK_URL
+
+from app.handlers.appengine_utilities.sessions import Session
 
 
 class OauthHandler(BaseHandler):
@@ -39,8 +39,8 @@ class OauthHandler(BaseHandler):
         try:
             user_info = client.get_user_info(auth_token,
                                                 auth_verifier=auth_verifier)
-        except oauth.OAuthException, e:
-            return self.render_template('error.html', msg=str(e))
+        except oauth.OAuthException, error:
+            return self.render_template('error.html', msg=str(error))
 
         return (user_info['username'], user_info['name'], user_info['secret'],
                 user_info['token'])

@@ -5,7 +5,7 @@ All handlers should inherit from here.
 """
 
 import os
-import oauth
+from app.handlers import oauth
 import logging
 
 from google.appengine.api import urlfetch
@@ -15,7 +15,7 @@ from google.appengine.ext.webapp import template
 from django.utils import simplejson
 
 from app.models import SQUser
-from appengine_utilities.sessions import Session
+from app.handlers.appengine_utilities.sessions import Session
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '../../templates/')
 

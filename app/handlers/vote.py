@@ -4,10 +4,8 @@ Handler to deal with voting on tweets.
 
 from django.utils import simplejson
 
-from app.models import Vote as VoteModel
-from app.models import SQUser, Tweet
-
-from base import BaseHandler, NotLoggedIn
+from app.models import Tweet, Vote as VoteModel
+from app.handlers.base import BaseHandler, NotLoggedIn
 
 
 class Vote(BaseHandler):
