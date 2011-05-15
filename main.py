@@ -18,7 +18,6 @@ def main():
 
     logging.getLogger().setLevel(logging.DEBUG)
 
-    # FIXME: Remove username from urls, use get_logged_in_user instead
     application = webapp.WSGIApplication([('/', Main),
                                    ('/register/(.*)', Register),
                                    ('/signin/', Signin),
