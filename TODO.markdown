@@ -2,6 +2,8 @@
 
 The following items still remain for the MVP:
 
-- Allow user to unfollow user
 - New pages
     - Show unfollow recommendations
+
+The following cleanup items need attention:
+    - Move lots of put() code, detecting duplicates, etc. into models.py
