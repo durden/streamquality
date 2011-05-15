@@ -6,6 +6,7 @@ All handlers should inherit from here.
 
 import os
 import oauth
+import logging
 
 from google.appengine.api import urlfetch
 from google.appengine.ext import webapp
@@ -137,7 +138,6 @@ class BaseHandler(webapp.RequestHandler):
         """Determine if debug mode is on or not"""
 
         if self.request.url.startswith('http://localhost'):
-            import logging
             logging.debug("In debug mode")
             return 1
         else:
