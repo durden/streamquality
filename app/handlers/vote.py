@@ -24,7 +24,7 @@ class Vote(BaseHandler):
             return self.render_template('error.html', msg="Must be logged in")
 
         if status_code != 200:
-            return self.render_template('vote.html',
+            return self.render_template('error.html',
                             msg='Status %d returned' % (status_code))
 
         tweets = []
