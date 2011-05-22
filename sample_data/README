@@ -1,0 +1,20 @@
+This directory is meant to hold csv files to be used by the bulkloader.yaml
+file to populate the production and/or development data store with sample data
+to test applications with.
+
+You will need to create the following csv files with the data you would like to
+insert:
+    - vote.csv
+    - squser.csv
+    - tweet.csv
+
+The csv files expect to have column headings as the first line.  Please see the
+bulkloader.yaml file for what columns are expected for each data type, etc.
+
+The following commands will add Vote, Tweet, and SQUser data to the development
+data store.  To populate the production data store instead, replace the url
+argument with your appspot.com address.
+
+appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/vote.csv --config_file=bulkloader.yaml --kind=Vote
+appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/squser.csv --config_file=bulkloader.yaml --kind=SQUser
+appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/tweet.csv --config_file=bulkloader.yaml --kind=Tweet
