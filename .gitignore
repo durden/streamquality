@@ -2,4 +2,5 @@
 *.pyc
 *.swp
 *.db
+*.csv
 tokens.py
