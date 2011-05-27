@@ -2,6 +2,8 @@
 Handler to deal with voting on tweets.
 """
 
+import datetime
+
 from django.utils import simplejson
 
 from app.models import Tweet, Vote as VoteModel
@@ -40,6 +42,8 @@ class Vote(BaseHandler):
             tweet['text'] = entry['text']
             tweet['id'] = entry['id_str']
             tweet['vote_cnt'] = 0
+            tweet['created_at'] = datetime.datetime.strptime(
+                            entry['created_at'], "%a %b %d %H:%M:%S +0000 %Y")
 
             for vote in votes:
                 if vote.tweet.id == entry['id_str']:
