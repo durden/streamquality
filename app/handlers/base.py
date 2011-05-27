@@ -113,6 +113,7 @@ class BaseHandler(webapp.RequestHandler):
         tweet['real_name'] = resp['user']['name']
         tweet['profile_image_url'] = resp['user']['profile_image_url']
         tweet['text'] = resp['text']
+        tweet['created_at'] = resp['created_at']
         return tweet
 
     def get_logged_in_user(self):

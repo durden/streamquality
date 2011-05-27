@@ -2,6 +2,7 @@
 Models
 """
 
+import datetime
 
 from google.appengine.ext import db
 
@@ -25,6 +26,7 @@ class Tweet(db.Model):
     author_real_name = db.StringProperty(required=True)
     author_profile_image_url = db.StringProperty(required=True)
     text = db.StringProperty(required=True, multiline=True)
+    created_at = db.DateTimeProperty(required=True)
 
     @staticmethod
     def get_or_create(tweet_info):
@@ -37,7 +39,10 @@ class Tweet(db.Model):
                     author_profile_image_url=tweet_info['profile_image_url'],
                     author_real_name=tweet_info['real_name'],
                     author_user_name=tweet_info['user_name'],
-                    text=tweet_info['text'])
+                    text=tweet_info['text'],
+                    created_at=datetime.datetime.strptime(
+                                                tweet_info['created_at'],
+                                                "%a %b %d %H:%M:%S +0000 %Y"))
             tweet.put()
 
         return tweet

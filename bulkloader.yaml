@@ -68,6 +68,10 @@ transformers:
       external_name: text
       # Type: String Stats: 6 properties of this type in this kind.
 
+    - property: created_at
+      external_name: created_at
+      import_transform: transform.import_date_time("%a %b %d %H:%M:%S +0000 %Y")
+      export_transform: transform.import_date_time("%a %b %d %H:%M:%S +0000 %Y")
 
 - kind: Vote
   connector: csv
