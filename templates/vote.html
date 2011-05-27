@@ -27,6 +27,7 @@
                 </div>
                 <div>{{tweet.text}}</div>
                 <div id="{{tweet.id}}">Vote:{{tweet.vote_cnt}}</div>
+                <div>{{tweet.created_at}}</div>
                 <a href="#" onclick="tweet_vote('{{user_name}}',
                                             '{{tweet.id}}', 'up');">up</a>
                 <a href="#" onclick="tweet_vote('{{user_name}}',

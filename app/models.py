@@ -86,6 +86,7 @@ class Vote(db.Model):
             tweet['text'] = vote.tweet.text
             tweet['id'] = vote.tweet.id
             tweet['vote_cnt'] = vote.count
+            tweet['created_at'] = vote.tweet.created_at
 
             tweets.append(tweet)
 
