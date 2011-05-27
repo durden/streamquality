@@ -14,14 +14,15 @@ CONSUMER_KEY = "lMbLOg9VXgzLVNEw3IrsGQ"
 CONSUMER_SECRET = "4tgcfLT9sUxihC3D6XHJMUBKD6peHhhW9UfBYH0PMYI"
 
 # Fill in this with where app engine is installed on your system
-install_dir = "/Applications/GoogleAppEngineLauncher.app/Contents/" + \
+app_engine_dir = "/Applications/GoogleAppEngineLauncher.app/Contents/" + \
               "Resources/GoogleAppEngine-default.bundle/Contents/" + \
               "Resources/google_appengine"
-sys.path.append(install_dir)
-sys.path.append(install_dir + "/lib/yaml/lib")
-sys.path.append(install_dir + "/lib/fancy_urllib/")
-sys.path.append(install_dir + "/lib/simplejson/")
-sys.path.append("../app/handlers/")
+app_dir = "/Users/durden/Dropbox/code/web/frameworks/app_engine/streamquality"
+sys.path.append(app_engine_dir)
+sys.path.append(app_engine_dir + "/lib/yaml/lib")
+sys.path.append(app_engine_dir + "/lib/fancy_urllib/")
+sys.path.append(app_engine_dir + "/lib/simplejson/")
+sys.path.append(app_dir + "/app/handlers/")
 
 try:
     from private_oauth_creds.tokens import USER_TOKEN, USER_SECRET
