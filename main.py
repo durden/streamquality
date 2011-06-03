@@ -25,7 +25,7 @@ def main():
                                    ('/signin_callback/$', SigninCallback),
                                    ('/about/$', About),
                                    ('/logout/$', Logout),
-                                   ('/vote/$', Vote),
+                                   ('/vote/(\d*)/$', Vote),
                                    ('/vote/up/(\d+)/$', VoteUp),
                                    ('/vote/down/(\d+)/$', VoteDown),
                                    ('/myvotes/(\w*)$', MyVotes),

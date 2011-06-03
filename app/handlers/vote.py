@@ -13,7 +13,7 @@ from app.handlers.base import BaseHandler, NotLoggedIn
 class Vote(BaseHandler):
     """Vote on tweets"""
 
-    def get(self):
+    def get(self, page=1):
         """Interface for logged in user to vote"""
 
         # Get 20 most recent tweets from friends/user
@@ -21,7 +21,8 @@ class Vote(BaseHandler):
                 ['http://api.twitter.com/1/statuses/home_timeline.json'])
 
         try:
-            (status_code, timeline) = self.send_twitter_request(url)
+            (status_code, timeline) = self.send_twitter_request(url,
+                                        additional_params={'page': page})
         except NotLoggedIn:
             return self.render_template('error.html', msg="Must be logged in")
 
@@ -52,7 +53,7 @@ class Vote(BaseHandler):
             tweets.append(tweet)
 
         self.render_template('vote.html', user_name=user.user_name,
-                             tweets=tweets)
+                             tweets=tweets, page=page)
 
 
 class VoteTweet(BaseHandler):
