@@ -18,7 +18,7 @@ class Vote(BaseHandler):
 
         # Get 20 most recent tweets from friends/user
         url = ''.join(
-                ['http://api.twitter.com/1/statuses/friends_timeline.json'])
+                ['http://api.twitter.com/1/statuses/home_timeline.json'])
 
         try:
             (status_code, timeline) = self.send_twitter_request(url)
