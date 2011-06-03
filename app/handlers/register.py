@@ -135,7 +135,7 @@ class SigninCallback(OauthHandler):
         self.session = Session()
         self.session['user_name'] = user_name
 
-        return self.redirect('/vote/')
+        return self.redirect('/vote/1/')
 
 
 class Unfollow(BaseHandler):
