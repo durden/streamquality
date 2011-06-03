@@ -18,3 +18,7 @@ argument with your appspot.com address.
 appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/vote.csv --config_file=bulkloader.yaml --kind=Vote
 appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/squser.csv --config_file=bulkloader.yaml --kind=SQUser
 appcfg.py upload_data --application=streamquality --url=http://localhost:8084/remote_api --filename=sample_data/tweet.csv --config_file=bulkloader.yaml --kind=Tweet
+
+This process can also be automated by running the load.py script in this
+directory.  You will most likely need to update some of the defines including
+app_name, etc. in this script before running.
