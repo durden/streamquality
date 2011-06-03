@@ -37,5 +37,9 @@
             </ul>
         {% endif %}
     {% endfor %}
-    <a href="/vote/{{page|add:"1"}}/">next</a>
+
+    {% if page %}
+        <a href="/vote/{{page|add:"1"}}/">next</a>
+    {% endif %}
+
 {% endblock %}
