@@ -3,4 +3,5 @@
 *.swp
 *.db
 *.csv
+bulkloader-*
 tokens.py
