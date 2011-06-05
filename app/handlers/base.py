@@ -38,6 +38,7 @@ class BaseHandler(webapp.RequestHandler):
 
         # FIXME: Set expire timeout on sessions when created
         self.session = Session()
+        super(webapp.RequestHandler, self).__init__()
 
     def render_template(self, name, *arguments, **keywords):
         """High-level wrapper for loading and directing to template"""
