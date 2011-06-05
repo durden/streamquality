@@ -38,8 +38,11 @@
         {% endif %}
     {% endfor %}
 
-    {% if page %}
-        <a href="/vote/{{page|add:"1"}}/">next</a>
+    {% if prev_page %}
+        <a href="/vote/{{prev_page}}/">Previous</a>
+    {% endif %}
+    {% if next_page %}
+        <a href="/vote/{{next_page}}/">Next</a>
     {% endif %}
 
 {% endblock %}

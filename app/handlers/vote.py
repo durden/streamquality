@@ -52,8 +52,20 @@ class Vote(BaseHandler):
 
             tweets.append(tweet)
 
+        page = int(page)
+        next_page = None
+        prev_page = None
+
+        # Setup prev/next pages, can't do this in template b/c they are pretty
+        # limited when it comes to math in version 0.96
+        if page >= 2:
+            prev_page = page - 1
+
+        next_page = page + 1
+
         self.render_template('vote.html', user_name=user.user_name,
-                             tweets=tweets, page=page)
+                             tweets=tweets, next_page=next_page,
+                             prev_page=prev_page)
 
 
 class VoteTweet(BaseHandler):
