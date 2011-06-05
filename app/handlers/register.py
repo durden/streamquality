@@ -49,11 +49,11 @@ class OauthHandler(BaseHandler):
 class Register(OauthHandler):
     """Deal with registering user with local service"""
 
-    def get(self, result=None):
+    def get(self, result):
         """GET request"""
 
         msg = ""
-        if result is not None:
+        if result:
             if result == "success":
                 msg = "User registered!"
             elif result == "incomplete":
@@ -65,7 +65,7 @@ class Register(OauthHandler):
 
         self.render_template('register.html', msg=msg)
 
-    def post(self, result=None):
+    def post(self, result):
         """POST request"""
 
         user_name = cgi.escape(self.request.get('user_name'))

@@ -13,8 +13,13 @@ from app.handlers.base import BaseHandler, NotLoggedIn
 class Vote(BaseHandler):
     """Vote on tweets"""
 
-    def get(self, page=1):
+    def get(self, page):
         """Interface for logged in user to vote"""
+
+        # Base class for app engine doesn't allow defaulting arguments with
+        # kwargs
+        if not page:
+            page = 1
 
         # Get 20 most recent tweets from friends/user
         url = ''.join(
@@ -112,7 +117,7 @@ class VoteDown(VoteTweet):
 class MyVotes(VoteTweet):
     """Show logged in user tweets they've voted on grouped by author"""
 
-    def get(self, author=""):
+    def get(self, author):
         """Show votes logged in user has optionally filtered by author"""
 
         user = self.get_logged_in_user()
