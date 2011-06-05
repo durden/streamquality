@@ -13,7 +13,7 @@ from app.handlers.base import BaseHandler, NotLoggedIn
 class Vote(BaseHandler):
     """Vote on tweets"""
 
-    def get(self, page):
+    def get(self, page, json):
         """Interface for logged in user to vote"""
 
         # Base class for app engine doesn't allow defaulting arguments with
@@ -51,26 +51,21 @@ class Vote(BaseHandler):
             tweet['created_at'] = datetime.datetime.strptime(
                             entry['created_at'], "%a %b %d %H:%M:%S +0000 %Y")
 
+            if json:
+                tweet['created_at'] = str(tweet['created_at'])
+
             for vote in votes:
                 if vote.tweet.id == entry['id_str']:
                     tweet['vote_cnt'] = vote.count
 
             tweets.append(tweet)
 
-        page = int(page)
-        next_page = None
-        prev_page = None
+        if json:
+            return self.response.out.write(simplejson.dumps(
+                                                        {'tweets': tweets}))
 
-        # Setup prev/next pages, can't do this in template b/c they are pretty
-        # limited when it comes to math in version 0.96
-        if page >= 2:
-            prev_page = page - 1
-
-        next_page = page + 1
-
-        self.render_template('vote.html', user_name=user.user_name,
-                             tweets=tweets, next_page=next_page,
-                             prev_page=prev_page)
+        return self.render_template('vote.html', user_name=user.user_name,
+                                     tweets=tweets, page=page)
 
 
 class VoteTweet(BaseHandler):

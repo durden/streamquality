@@ -10,6 +10,13 @@
                     tweet.html('Vote:' + json['vote_cnt']);
                 });
         }
+        function load_tweets(page) {
+            $.getJSON("/vote/" + page + "/json",
+                function(json) {
+                    alert(json['tweets'][0]['text']);
+                    $('#tweet_list').append(json['tweets'][0]['text']);
+                });
+        }
     </script>
 {% endblock %}
 
