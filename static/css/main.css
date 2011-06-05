@@ -9,19 +9,16 @@
 }
 
 
-ul.tweet_list {
+ul#tweet_list {
     list-style-type: none;
 }
 
-.vote_tweet {
-}
-
-ul.tweet_list li {
+ul#tweet_list li {
     border-bottom: 1px solid #000;
     padding: .5em;
 }
 
-ul.tweet_list li a {
+ul#tweet_list li a {
     padding: .5em;
 }
 
