@@ -13,8 +13,10 @@
         function load_tweets(page) {
             $.getJSON("/vote/" + page + "/json",
                 function(json) {
-                    alert(json['tweets'][0]['text']);
-                    $('#tweet_list').append(json['tweets'][0]['text']);
+                    $('#tweet_list').append(json['html']);
+
+                    $('#next_page').html('<a href="#" onclick="load_tweets(' +
+                                         json['page'] + ');">more</a>');
                 });
         }
     </script>

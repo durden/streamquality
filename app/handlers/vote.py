@@ -2,12 +2,14 @@
 Handler to deal with voting on tweets.
 """
 
+import os
 import datetime
 
 from django.utils import simplejson
+from google.appengine.ext.webapp import template
 
 from app.models import Tweet, Vote as VoteModel
-from app.handlers.base import BaseHandler, NotLoggedIn
+from app.handlers.base import BaseHandler, NotLoggedIn, TEMPLATE_DIR
 
 
 class Vote(BaseHandler):
@@ -20,6 +22,8 @@ class Vote(BaseHandler):
         # kwargs
         if not page:
             page = 1
+
+        next_page = int(page) + 1
 
         # Get 20 most recent tweets from friends/user
         url = ''.join(
@@ -61,11 +65,17 @@ class Vote(BaseHandler):
             tweets.append(tweet)
 
         if json:
+            html = ""
+            for tweet in tweets:
+                path = os.path.join(os.path.dirname(__file__),
+                                        TEMPLATE_DIR + 'tweet_vote.html')
+                html += template.render(path, {'tweet': tweet})
+
             return self.response.out.write(simplejson.dumps(
-                                                        {'tweets': tweets}))
+                                            {'html': html, 'page': next_page}))
 
         return self.render_template('vote.html', user_name=user.user_name,
-                                     tweets=tweets, page=page)
+                                     tweets=tweets, page=next_page)
 
 
 class VoteTweet(BaseHandler):
