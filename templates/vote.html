@@ -26,30 +26,14 @@
         {% if forloop.first %}
             <ul id="tweet_list">
         {% endif %}
-            <li>
-                <div>
-                    <img src="{{tweet.profile_image_url}}"/>
-                    <a href="http://www.twitter.com/{{tweet.author_screen_name}}">
-                    {{tweet.author_screen_name}}</a> {{tweet.author_name}}
-                </div>
-                <div>{{tweet.text}}</div>
-                <div id="{{tweet.id}}">Vote:{{tweet.vote_cnt}}</div>
-                <div>{{tweet.created_at}}</div>
-                <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id}}', 'up');">up</a>
-                <a href="#" onclick="tweet_vote('{{user_name}}',
-                                            '{{tweet.id}}', 'down');">down</a>
-            </li>
+            {% include "tweet_vote.html" %}
         {% if forloop.last %}
             </ul>
         {% endif %}
     {% endfor %}
 
-    {% if prev_page %}
-        <a href="/vote/{{prev_page}}/">Previous</a>
-    {% endif %}
-    {% if next_page %}
-        <a href="/vote/{{next_page}}/">Next</a>
-    {% endif %}
+    <div id="next_page">
+        <a href="#" onclick="load_tweets({{page}});">more</a>
+    </div>
 
 {% endblock %}

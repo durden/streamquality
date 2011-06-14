@@ -1,0 +1,16 @@
+<li>
+    <div>
+        <img src="{{tweet.profile_image_url}}"/>
+        <a href="http://www.twitter.com/{{tweet.author_screen_name}}">
+            {{tweet.author_screen_name}}
+        </a>
+        {{tweet.author_name}}
+    </div>
+    <div>{{tweet.text}}</div>
+    <div id="{{tweet.id}}">Vote:{{tweet.vote_cnt}}</div>
+    <div>{{tweet.created_at}}</div>
+    <a href="#" onclick="tweet_vote('{{user_name}}',
+                                '{{tweet.id}}', 'up');">up</a>
+    <a href="#" onclick="tweet_vote('{{user_name}}',
+                                '{{tweet.id}}', 'down');">down</a>
+</li>
