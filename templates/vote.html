@@ -8,6 +8,7 @@
                 function(json) {
                     var tweet = $("#" + json['id']);
                     tweet.html('Vote:' + json['vote_cnt']);
+                    document.location = '#' + tweet_id;
                 });
         }
         function load_tweets(page) {
