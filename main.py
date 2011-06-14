@@ -25,9 +25,9 @@ def main():
                                    ('/signin_callback/$', SigninCallback),
                                    ('/about/$', About),
                                    ('/logout/$', Logout),
-                                   (r'/vote/(\d*)/*(.*)$', Vote),
                                    ('/vote/up/(\d+)/$', VoteUp),
                                    ('/vote/down/(\d+)/$', VoteDown),
+                                   (r'/vote/(\d*)/*(.*)$', Vote),
                                    ('/myvotes/(\w*)$', MyVotes),
                                    ('/unfollow/(\w+)/$', Unfollow),
                                    ('.*', Missing), ], debug=True)
